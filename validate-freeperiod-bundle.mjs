@@ -16,6 +16,9 @@ const decodedBytes = Buffer.from(encoded, 'base64');
 const html = decodedBytes.toString('utf8');
 const roundTrip = decodedBytes.equals(Buffer.from(html, 'utf8'));
 const title = html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.trim() || '';
+const manifestMatch = html.match(/const FREE_PERIOD_GAME_NAMES = Object\.freeze\((\[[\s\S]*?\])\);/);
+const gameNames = manifestMatch ? JSON.parse(manifestMatch[1]) : [];
+const startupFunction = html.match(/async function initZipButtons\(\) \{([\s\S]*?)\n\}/)?.[1] || '';
 const scriptPattern = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
 let executableScripts = 0;
 let scriptNumber = 0;
@@ -66,6 +69,13 @@ const checks = [
   ['decoded document starts with an HTML doctype', /^\s*<!doctype html>/i.test(html)],
   ['decoded document title is FreePeriod', title === 'FreePeriod'],
   ['decoded document contains the FreePeriod application', /\bFreePeriod\b/.test(html)],
+  ['full FreePeriod manifest contains exactly 300 games', gameNames.length === 300],
+  ['full FreePeriod manifest has 300 unique game names', new Set(gameNames).size === 300],
+  ['all catalog entries are standalone HTML games', gameNames.every(name => /\.html?$/i.test(name))],
+  ['catalog uses the maintained 300-game raw source', html.includes("const FREE_PERIOD_RAW_BASE = 'https://raw.githubusercontent.com/CoolDude2349/Offline-HTML-Games-Pack/master/offline/';")],
+  ['startup renders the complete manifest without downloading ZIP packs', startupFunction.includes('loadBuiltInGameCatalog();') && !startupFunction.includes('loadZip(') && !startupFunction.includes('canvas.instructure.com')],
+  ['catalog downloads only a selected game on demand', html.includes("await fetch(sourceUrl, { cache: 'force-cache', credentials: 'omit' })")],
+  ['rejected six-game fallback is not bundled', !source.includes('freeperiod-games/') && !html.includes('FREE_PERIOD_STARTER_GAMES')],
   ['all inline executable scripts pass Node syntax validation', executableScripts > 0],
   ['FreePeriod has no missing local file dependencies', localReferences.length === 0],
   ['Asteroid OS exposes the FreePeriod decoder', source.includes('function getFreePeriodHTML()')],
@@ -80,6 +90,7 @@ const report = {
   encodedCharacters: encoded.length,
   decodedBytes: decodedBytes.length,
   executableScripts,
+  manifestGames: gameNames.length,
   localReferences,
   passed: checks.length - failures.length,
   total: checks.length,

@@ -102,6 +102,15 @@ const requiredRuntimeReferences = [
   'transport/libcurl.js',
 ];
 const unreferencedRuntimeFiles = requiredRuntimeReferences.filter((file) => !combined.includes(file));
+const nonGoogleSearchProviders = [
+  'search.brave.com',
+  'duckduckgo.com',
+  'bing.com/search',
+].filter((provider) => userFacingBrowserSource.toLowerCase().includes(provider));
+const googleSearchIsForced = /const\s+GOOGLE_SEARCH_URL\s*=\s*["']https:\/\/www\.google\.com\/search\?q=["']/.test(app)
+  && /merged\.searchEngine\s*=\s*GOOGLE_SEARCH_URL/.test(app)
+  && /merged\.searchEngineName\s*=\s*["']Google["']/.test(app)
+  && /return\s+GOOGLE_SEARCH_URL\s*\+\s*encodeURIComponent\(raw\)/.test(app);
 
 const checks = [
   ['all 19 original Asteroid Browser files are present', missingFiles.length === 0],
@@ -115,6 +124,9 @@ const checks = [
   ['browser config includes a secure Wisp transport', /wss:\/\//i.test(config)],
   ['browser is visibly branded as Asteroid Browser', /<title>\s*Asteroid Browser\s*<\/title>/i.test(index) && /pageTitle\s*:\s*["']Asteroid Browser["']/i.test(config)],
   ['legacy proxy branding is absent from user-facing browser code', legacyBrandMatches.length === 0],
+  ['Google is the forced search provider for new and existing installations', googleSearchIsForced && /searchEngine\s*:\s*["']https:\/\/www\.google\.com\/search\?q=["']/.test(config)],
+  ['the new-tab search control is visibly Google-only', /id=["']ntEngineLabel["']>Google</.test(index) && !/data-engine=/i.test(index)],
+  ['no alternate search-provider endpoint remains selectable', nonGoogleSearchProviders.length === 0],
 ];
 
 const failures = checks.filter(([, passed]) => !passed).map(([name]) => name);
@@ -130,6 +142,7 @@ const report = {
   unreferencedRuntimeFiles,
   pageRootAssetReferences,
   legacyBrandMatches,
+  nonGoogleSearchProviders,
   passed: checks.length - failures.length,
   total: checks.length,
   failures,

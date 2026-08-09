@@ -1,7 +1,7 @@
 globalThis.ASTEROID_SCRAMJET_CONFIG = Object.freeze({
   wispUrl: "wss://anura.pro/",
   fallbackWispUrl: "wss://wisp.mercurywork.shop/wisp/",
-  searchEngine: "https://search.brave.com/search?q=",
+  searchEngine: "https://www.google.com/search?q=",
   aiEndpoint: "https://text.pollinations.ai/{prompt}",
   pageTitle: "Asteroid Browser",
   libcurlTransportVersion: "2.0.5",

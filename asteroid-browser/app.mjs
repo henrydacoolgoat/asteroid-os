@@ -24,6 +24,7 @@ const COMPATIBILITY_STORAGE = "asteroid:browser:compatibility:v1";
 const COMPATIBILITY_MATRIX_VERSION = 1;
 const COMPATIBILITY_SETTLE_MS = 4500;
 const COMPATIBILITY_HARD_TIMEOUT_MS = 15000;
+const GOOGLE_SEARCH_URL = "https://www.google.com/search?q=";
 
 const ASTEROID_LAUNCH = (() => {
   const params = new URLSearchParams(location.hash.replace(/^#/, ""));
@@ -76,8 +77,8 @@ const defaults = Object.freeze({
   fallbackTimeout: true,
   fallbackDns: true,
   timeoutSeconds: 18,
-  searchEngine: config.searchEngine || "https://search.brave.com/search?q=",
-  searchEngineName: "Brave",
+  searchEngine: GOOGLE_SEARCH_URL,
+  searchEngineName: "Google",
   customSearchName: "Custom",
   customSearchUrl: "https://www.google.com/search?q={q}",
   idleThreads: 3,
@@ -228,9 +229,12 @@ function mergeSettings(raw) {
   }
   merged.wispUrl = normalizeSocketUrl(merged.wispUrl, defaults.wispUrl);
   merged.fallbackWispUrl = normalizeSocketUrl(merged.fallbackWispUrl, defaults.fallbackWispUrl);
-  merged.searchEngine = normalizeSearchUrl(merged.searchEngine, defaults.searchEngine);
+  // Asteroid Browser intentionally uses one predictable search provider.
+  // This also migrates installations that previously persisted Brave or a
+  // custom engine in local storage.
+  merged.searchEngine = GOOGLE_SEARCH_URL;
   merged.customSearchUrl = normalizeSearchUrl(merged.customSearchUrl, defaults.customSearchUrl, true);
-  merged.searchEngineName = merged.searchEngineName.trim().slice(0, 40) || defaults.searchEngineName;
+  merged.searchEngineName = "Google";
   merged.customSearchName = merged.customSearchName.trim().slice(0, 40) || defaults.customSearchName;
   merged.requestUA = merged.requestUA.replace(/[\r\n]/g, " ").trim().slice(0, 512);
   merged.pageUA = merged.pageUA.replace(/[\r\n]/g, " ").trim().slice(0, 512);
@@ -741,8 +745,7 @@ function normalize(value) {
   try { const url = new URL(raw); if (/^https?:$/.test(url.protocol)) return url.href; } catch {}
   if (/^(localhost|127\.0\.0\.1)(:\d+)?([/?#].*)?$/i.test(raw)) return `http://${raw}`;
   if (/^[\w.-]+\.[a-z]{2,}(:\d+)?([/?#].*)?$/i.test(raw)) return `https://${raw}`;
-  if (settings.searchEngine.includes("{q}")) return settings.searchEngine.replace("{q}", encodeURIComponent(raw));
-  return settings.searchEngine + encodeURIComponent(raw);
+  return GOOGLE_SEARCH_URL + encodeURIComponent(raw);
 }
 function activeTab() { return tabs.get(activeTabId); }
 function titleFor(url) { try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return "New Tab"; } }
@@ -1780,16 +1783,15 @@ function openSettingsSection(section) {
 }
 function renderSearchEngines() {
   const root = $("settingsEngineRows"); if (!root) return;
-  const engines = [
-    ["Brave", "https://search.brave.com/search?q="], ["DuckDuckGo", "https://duckduckgo.com/?q="], ["Bing", "https://www.bing.com/search?q="], [settings.customSearchName || "Custom", settings.customSearchUrl]
-  ];
   root.innerHTML = "";
-  for (const [name, url] of engines) {
-    const button = document.createElement("button"); button.className = `settings-engine-btn${settings.searchEngine === url ? " active" : ""}`;
-    button.innerHTML = `<div class="engine-radio"><div class="engine-radio-dot"></div></div><div><div class="engine-name"></div><div class="engine-url"></div></div>`;
-    button.querySelector(".engine-name").textContent = name; button.querySelector(".engine-url").textContent = url;
-    button.addEventListener("click", () => { settings.searchEngine = url; settings.searchEngineName = name; saveSettings(); renderSearchEngines(); renderHome(); }); root.append(button);
-  }
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "settings-engine-btn active";
+  button.setAttribute("aria-disabled", "true");
+  button.innerHTML = `<div class="engine-radio"><div class="engine-radio-dot"></div></div><div><div class="engine-name"></div><div class="engine-url"></div></div>`;
+  button.querySelector(".engine-name").textContent = "Google";
+  button.querySelector(".engine-url").textContent = GOOGLE_SEARCH_URL;
+  root.append(button);
 }
 const locales = [
   ["", "System default"], ["en-US", "English (United States)"], ["en-GB", "English (United Kingdom)"], ["es-US", "Español (Estados Unidos)"], ["es-ES", "Español (España)"], ["fr-FR", "Français"], ["de-DE", "Deutsch"], ["it-IT", "Italiano"], ["pt-BR", "Português (Brasil)"], ["ja-JP", "日本語"], ["ko-KR", "한국어"], ["zh-CN", "中文（简体）"]
@@ -2045,8 +2047,6 @@ function bindEvents() {
   $("wallpaperRandom")?.addEventListener("click", createRandomWallpaper);
   $("wallpaperFileInput")?.addEventListener("change", async (event) => { const file = event.target.files?.[0]; event.target.value = ""; await setWallpaperFile(file); });
 
-  $("ntEngine")?.addEventListener("click", (event) => { event.stopPropagation(); $("ntEngineDropdown")?.classList.toggle("show"); });
-  for (const button of document.querySelectorAll("#ntEngineDropdown button")) button.addEventListener("click", (event) => { event.stopPropagation(); const engine = button.dataset.engine; const map = { brave: ["Brave", "https://search.brave.com/search?q="], ddg: ["DuckDuckGo", "https://duckduckgo.com/?q="], bing: ["Bing", "https://www.bing.com/search?q="], custom: [settings.customSearchName, settings.customSearchUrl] }; [settings.searchEngineName, settings.searchEngine] = map[engine] || map.brave; saveSettings(); renderHome(); renderSearchEngines(); $("ntEngineDropdown")?.classList.remove("show"); });
   $("tabScrollLeft")?.addEventListener("click", () => tabStrip.scrollBy({ left: -260, behavior: "smooth" })); $("tabScrollRight")?.addEventListener("click", () => tabStrip.scrollBy({ left: 260, behavior: "smooth" }));
 
   document.querySelectorAll(".settings-nav-item").forEach((nav) => nav.addEventListener("click", () => openSettingsSection(nav.dataset.section)));

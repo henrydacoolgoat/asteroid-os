@@ -78,13 +78,13 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="MessageX" />
   <meta name="application-name" content="MessageX" />
-  <meta name="messagex-build" content="messagex-v0994-post-ticket-resilient-permanent-gateway-asteroid-bundled-2026-08-06" />
+  <meta name="messagex-build" content="messagex-v0994-desktop-columns-permanent-gateway-asteroid-bundled-2026-08-09" />
   <meta name="messagex-distribution" content="asteroid-os-bundled" />
   <script id="messagex-asteroid-bundled-flag">
     window.__ASTEROID_OS_BUNDLED_MESSAGEX__ = true;
     window.__ASTEROID_OS_DISABLE_SELF_UPDATE__ = true;
     window.addEventListener('DOMContentLoaded', () => {
-      try { parent.postMessage({type:'asteroid-messagex-ready', build:'messagex-v0994-post-ticket-resilient-permanent-gateway-asteroid-bundled-2026-08-06'}, '*'); } catch (_) {}
+      try { parent.postMessage({type:'asteroid-messagex-ready', build:'messagex-v0994-desktop-columns-permanent-gateway-asteroid-bundled-2026-08-09'}, '*'); } catch (_) {}
     }, {once:true});
   </script>
   <meta name="messagex-economy" content="removed; all themes free" />
@@ -20020,6 +20020,61 @@ body.has-custom-wallpaper:is(
     body.mx-archived-chat #recording-bar { display: none !important; }
   </style>
   <meta name="messagex-performance" content="single-rpc-bootstrap; cached-first-render; deferred-background-services" />
+  <style id="messagex-desktop-column-integrity-20260809">
+    /* Theme scenery must never turn the two desktop application screens back
+       into full-window absolute layers. Keep the chat list and active
+       conversation in separate, clipped grid columns at desktop widths. */
+    @media (min-width: 1000px) {
+      body.is-app #device {
+        display: grid !important;
+        grid-template-columns: clamp(300px, 29vw, 420px) minmax(0, 1fr) !important;
+        align-items: stretch !important;
+      }
+      body.is-app #device > #list-screen,
+      body.is-app #device > #chat-screen,
+      body.theme-weather.is-app #device > #list-screen,
+      body.theme-weather.is-app #device > #chat-screen {
+        position: relative !important;
+        inset: auto !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        height: 100dvh !important;
+        max-height: 100dvh !important;
+        transform: none !important;
+        opacity: 1 !important;
+        overflow: hidden !important;
+      }
+      body.is-app #device > #list-screen,
+      body.theme-weather.is-app #device > #list-screen {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+      }
+      body.is-app #device > #chat-screen,
+      body.theme-weather.is-app #device > #chat-screen {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+      }
+      body.is-app #list-screen .chats-scroll,
+      body.is-app #chat-screen .messages-area,
+      body.is-app #chat-screen .input-row {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+      }
+      body.is-app #list-screen .chat-item {
+        width: auto !important;
+        max-width: calc(100% - 16px) !important;
+        overflow: hidden !important;
+      }
+      body.is-app #chat-screen .message {
+        max-width: min(72%, 760px) !important;
+      }
+      body.is-app #chat-screen :is(.msg-bubble, .msg-image, .msg-video, .msg-audio) {
+        max-width: 100% !important;
+      }
+    }
+  </style>
 </head>
 <body>
 <main id="mx-main" aria-label="MessageX application">
