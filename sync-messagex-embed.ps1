@@ -27,8 +27,9 @@ $previousBuilds = @(
   "const MESSAGE_X_BUNDLED_BUILD='messagex-v0994-permanent-gateway-asteroid-bundled-2026-08-06';",
   "const MESSAGE_X_BUNDLED_BUILD='messagex-v0994-resilient-permanent-gateway-asteroid-bundled-2026-08-06';"
   "const MESSAGE_X_BUNDLED_BUILD='messagex-v0994-post-ticket-resilient-permanent-gateway-asteroid-bundled-2026-08-06';"
+  "const MESSAGE_X_BUNDLED_BUILD='messagex-v0994-desktop-columns-permanent-gateway-asteroid-bundled-2026-08-09';"
 )
-$newBuild = "const MESSAGE_X_BUNDLED_BUILD='messagex-v0994-desktop-columns-permanent-gateway-asteroid-bundled-2026-08-09';"
+$newBuild = "const MESSAGE_X_BUNDLED_BUILD='messagex-v0994-compact-call-preview-permanent-gateway-asteroid-bundled-2026-08-09';"
 foreach ($previousBuild in $previousBuilds) {
   if ($index.Contains($previousBuild)) {
     $index = $index.Replace($previousBuild, $newBuild)

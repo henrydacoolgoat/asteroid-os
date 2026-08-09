@@ -17,6 +17,8 @@ const checks = [
   ['desktop chat screen is pinned to the second grid column', /#chat-screen\s*\{[\s\S]{0,180}grid-column:\s*2\s*!important/.test(standalone)],
   ['weather theme cannot restore full-window absolute chat layers', /body\.theme-weather\.is-app\s+#device\s*>\s*#list-screen/.test(standalone) && /position:\s*relative\s*!important/.test(standalone)],
   ['chat messages and media are constrained to the active conversation column', /#chat-screen\s+\.message[\s\S]{0,100}max-width:\s*min\(72%,\s*760px\)\s*!important/.test(standalone) && /#chat-screen\s+:is\(\.msg-bubble,\s*\.msg-image,\s*\.msg-video,\s*\.msg-audio\)/.test(standalone)],
+  ['desktop call self preview is compact', /#mx-call-overlay\s+#mx-local-video\s*\{[\s\S]{0,260}width:\s*clamp\(108px,\s*10vw,\s*170px\)/.test(standalone)],
+  ['mobile call self preview remains compact', /@media\s*\(max-width:\s*620px\)[\s\S]{0,180}width:\s*clamp\(92px,\s*25vw,\s*126px\)/.test(standalone)],
 ];
 
 const failures = checks.filter(([, passed]) => !passed).map(([name]) => name);
