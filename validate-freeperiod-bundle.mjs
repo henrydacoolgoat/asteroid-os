@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
@@ -19,6 +19,27 @@ const title = html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.trim() || '
 const manifestMatch = html.match(/const FREE_PERIOD_GAME_NAMES = Object\.freeze\((\[[\s\S]*?\])\);/);
 const gameNames = manifestMatch ? JSON.parse(manifestMatch[1]) : [];
 const startupFunction = html.match(/async function initZipButtons\(\) \{([\s\S]*?)\n\}/)?.[1] || '';
+const primeCoversFunction = html.match(/function primeFallbackGameCovers\(\) \{([\s\S]*?)\n\}/)?.[1] || '';
+const coverDirectory = path.join(projectDirectory, 'freeperiod-covers');
+const expectedCoverFiles = gameNames.map(name => {
+  const stem = name.replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'game';
+  return `${stem}.jpg`;
+});
+const bundledCoverFiles = await readdir(coverDirectory).catch(() => []);
+const coverResults = await Promise.all(expectedCoverFiles.map(async fileName => {
+  try {
+    const bytes = await readFile(path.join(coverDirectory, fileName));
+    return {
+      fileName,
+      bytes: bytes.length,
+      jpeg: bytes.length > 4_000 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff,
+    };
+  } catch {
+    return { fileName, bytes: 0, jpeg: false };
+  }
+}));
+const missingCoverFiles = coverResults.filter(result => result.bytes === 0).map(result => result.fileName);
+const invalidCoverFiles = coverResults.filter(result => result.bytes > 0 && !result.jpeg).map(result => result.fileName);
 const scriptPattern = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
 let executableScripts = 0;
 let scriptNumber = 0;
@@ -76,8 +97,15 @@ const checks = [
   ['startup renders the complete manifest without downloading ZIP packs', startupFunction.includes('loadBuiltInGameCatalog();') && !startupFunction.includes('loadZip(') && !startupFunction.includes('canvas.instructure.com')],
   ['catalog downloads only a selected game on demand', html.includes("await fetch(sourceUrl, { cache: 'force-cache', credentials: 'omit' })")],
   ['rejected six-game fallback is not bundled', !source.includes('freeperiod-games/') && !html.includes('FREE_PERIOD_STARTER_GAMES')],
-  ['FreePeriod automatically restores its original cover archive', startupFunction.includes('restoreOriginalGameCovers();') && html.includes('await loadZip(r(covers), "covers", null, { quiet: true })')],
-  ['FreePeriod includes resilient real cover fallbacks', html.includes('FREE_PERIOD_FALLBACK_COVER_SOURCE') && html.includes('primeFallbackGameCovers();') && html.includes('cdn.jsdelivr.net/gh/retrobowlubg/retrobowlubg.github.io@main/img/jpg/')],
+  ['FreePeriod uses its complete bundled cover set at startup', startupFunction.includes('primeFallbackGameCovers();') && !startupFunction.includes('restoreOriginalGameCovers();') && primeCoversFunction.includes('FREE_PERIOD_LOCAL_COVER_BASE + freePeriodLocalCoverName(gameName)')],
+  ['all 300 game names map to unique local cover filenames', expectedCoverFiles.length === 300 && new Set(expectedCoverFiles).size === 300],
+  ['the bundled cover directory contains exactly 300 JPEG files', bundledCoverFiles.length === 300 && bundledCoverFiles.every(fileName => /\.jpg$/i.test(fileName))],
+  ['every catalog game has a bundled cover file', missingCoverFiles.length === 0],
+  ['every bundled cover is a nontrivial JPEG image', invalidCoverFiles.length === 0],
+  ['game frames request eager high-priority loading', html.includes('iframe.loading = "eager";') && html.includes('iframe.setAttribute("fetchpriority", "high")')],
+  ['game frames receive fullscreen, audio, and gamepad permissions', html.includes('autoplay; fullscreen; gamepad') && html.includes('iframe.setAttribute("allowfullscreen", "")')],
+  ['WebGL games request the high-performance GPU path without changing 2D contexts', html.includes('attributes.powerPreference="high-performance"') && html.includes('attributes.desynchronized=true') && html.includes('return originalGetContext.call(this,type,options);')],
+  ['launched games expose the Asteroid high-performance marker', html.includes('window.__asteroidHighPerformanceGameMode=true') && html.includes('data-asteroid-performance')],
   ['FreePeriod exits fullscreen before returning to its catalog', /backButton\.onclick\s*=\s*async\s*\(\)\s*=>[\s\S]{0,420}doc\.exitFullscreen/.test(html)],
   ['Asteroid OS restores its dock and chrome after fullscreen exits', source.includes('restoreAsteroidChromeAfterFullscreen') && source.includes("document.addEventListener('fullscreenchange',handleAsteroidFullscreenChange)")],
   ['all inline executable scripts pass Node syntax validation', executableScripts > 0],
@@ -95,6 +123,9 @@ const report = {
   decodedBytes: decodedBytes.length,
   executableScripts,
   manifestGames: gameNames.length,
+  bundledCovers: bundledCoverFiles.length,
+  missingCoverFiles,
+  invalidCoverFiles,
   localReferences,
   passed: checks.length - failures.length,
   total: checks.length,

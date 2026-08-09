@@ -76,14 +76,15 @@ Preserved behavior
 - No physical Windows reboot was performed during validation; the full-startup simulation exercised the exact post-sign-in launcher, supervisor, tunnel, and Supabase re-registration path without interrupting this task.
 
 2026-08-09 combined GitHub Pages release validation
-- The complete OS carries asteroid-os-v0.99.23.4-fullscreen-freeperiod-covers-messagex-call-2026-08-09 in document metadata and host runtime.
+- The complete OS carries asteroid-os-v0.99.23.4-all-freeperiod-covers-high-performance-games-2026-08-09 in document metadata and host runtime.
 - The full FreePeriod manifest remains exactly 300 unique HTML games; the rejected six-game fallback is not bundled.
-- FreePeriod automatically starts its original cover-art archive loader again, retries that archive without blocking the catalog, and uses verified real game-cover CDN files while the original Canvas archive is unavailable.
-- Browser QA rendered visible cover art for 12 Mini Battles, 1v1.lol, 2048, Ages of Conflict, Among Us, and other matched games. The tested 2048 cover and three additional representative cover URLs returned HTTP 200 image responses.
+- FreePeriod now contains one same-origin JPEG cover for every one of its 300 catalog games, so no card depends on the unavailable Canvas archive or a partial third-party CDN mapping.
+- The 300 generated filenames are unique, all 300 files pass JPEG signature and nontrivial-size validation, and every manifest title maps to an existing bundled cover.
+- Launched games now use an eager, high-priority frame with fullscreen, audio, and gamepad permissions. WebGL and WebGL2 games request the browser's high-performance GPU path and desynchronized rendering while older 2D canvas games retain their original context options.
 - Browser QA opened 2048 from FreePeriod and returned to the complete covered 300-game catalog.
 - FreePeriod exits its nested game fullscreen document before restoring the catalog, and Asteroid OS independently clears stale fullscreen/input layout state when an app closes or fullscreen ends so the dock is restored.
 - The MessageX self preview is now capped at 170 px on desktop and 126 px on mobile while keeping its 9:16 ratio, mirror transform, border, label, and control offsets.
 - Side-by-side visual QA against Screenshot 2026-08-09 173737.png confirmed that the self preview is materially smaller without covering the header or call controls; design-qa.md records final result: passed.
-- FreePeriod passed 21/21 dedicated bundle assertions; Asteroid Browser passed 14/14; MessageX desktop/call layout passed 10/10; MessageX media gateway passed 29/29; Supabase Auth hardening passed 17/17; all 34 inline scripts passed syntax validation.
+- FreePeriod passed its expanded dedicated bundle and cover assertions; Asteroid Browser, MessageX desktop/call layout, MessageX media gateway, Supabase Auth hardening, and all inline scripts also passed their release validators.
 - The permanent media endpoint /healthz returned ok=true; /gateway-meta reported backend_online=true, tunnel_mode=named-tunnel, and backend_transport=workers-vpc.
 - This release made no Supabase account, profile, chat, membership, message, storage registry, or laptop media-data changes.
