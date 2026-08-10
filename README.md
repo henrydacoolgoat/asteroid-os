@@ -22,6 +22,11 @@ complete Asteroid Browser runtime.
   and Browser service worker to run from a GitHub Pages project subdirectory.
 - All Browser-facing labels, internal Asteroid storage keys, and release
   validators use Asteroid Browser naming only.
+- When Asteroid Browser opens a secure `ixl.com` page, it automatically loads
+  the bundled IXL Answer Helper supplied for this release. The helper receives
+  persistent isolated settings and uses the Browser's Libcurl/Epoxy transport
+  for its Mistral, Supabase-cache, and other userscript HTTP requests. It is not
+  injected into any non-IXL website.
 
 ## Supabase Auth security upgrade
 

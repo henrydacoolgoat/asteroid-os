@@ -25,6 +25,11 @@ const COMPATIBILITY_MATRIX_VERSION = 1;
 const COMPATIBILITY_SETTLE_MS = 4500;
 const COMPATIBILITY_HARD_TIMEOUT_MS = 15000;
 const GOOGLE_SEARCH_URL = "https://www.google.com/search?q=";
+const IXL_ANSWER_HELPER_BUILD = "14.0.0-asteroid.1";
+const IXL_ANSWER_HELPER_URL = new URL("./userscripts/ixl-answer-helper.user.js", import.meta.url);
+const IXL_HTML2CANVAS_URL = "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js";
+const IXL_USERSCRIPT_STORAGE_PREFIX = "asteroid:userscript:ixl-answer-helper:";
+let ixlAnswerHelperAssetsPromise = null;
 
 const ASTEROID_LAUNCH = (() => {
   const params = new URLSearchParams(location.hash.replace(/^#/, ""));
@@ -831,6 +836,207 @@ function createFrameElement(id) {
   if (id !== 1) frameRoot.parentNode.insertBefore(el, frameRoot.nextSibling);
   return el;
 }
+
+function isIxlPageUrl(value) {
+  try {
+    const url = new URL(String(value || ""));
+    const host = url.hostname.toLowerCase();
+    return url.protocol === "https:" && (host === "ixl.com" || host.endsWith(".ixl.com"));
+  } catch {
+    return false;
+  }
+}
+
+function ixlPageUrl(tab, pageWindow) {
+  let liveFrameUrl = "";
+  try { liveFrameUrl = decodeFrameUrl(tab, ""); } catch {}
+  if (isIxlPageUrl(liveFrameUrl)) return liveFrameUrl;
+  if (/^https?:\/\//i.test(liveFrameUrl)) return "";
+
+  let liveWindowUrl = "";
+  try { liveWindowUrl = String(pageWindow?.location?.href || ""); } catch {}
+  if (isIxlPageUrl(liveWindowUrl)) return liveWindowUrl;
+  if (/^https?:\/\//i.test(liveWindowUrl)) return "";
+
+  return isIxlPageUrl(tab?.url) ? tab.url : "";
+}
+
+async function loadIxlAnswerHelperAssets() {
+  if (ixlAnswerHelperAssetsPromise) return ixlAnswerHelperAssetsPromise;
+  const pending = (async () => {
+    const helperResponse = await fetch(IXL_ANSWER_HELPER_URL, { cache: "no-cache", credentials: "same-origin" });
+    if (!helperResponse.ok) throw new Error(`IXL helper asset returned HTTP ${helperResponse.status}`);
+    const helperSource = await helperResponse.text();
+    if (!/IXL Answer Helper - Fixed DOM and Selection Support/.test(helperSource)
+      || !/local\.codex\.ixl-helper/.test(helperSource)) {
+      throw new Error("IXL helper asset did not contain the expected userscript metadata");
+    }
+
+    let html2canvasSource = "";
+    try {
+      const dependencyResponse = await fetch(IXL_HTML2CANVAS_URL, { cache: "force-cache", mode: "cors" });
+      if (!dependencyResponse.ok) throw new Error(`HTTP ${dependencyResponse.status}`);
+      html2canvasSource = await dependencyResponse.text();
+    } catch (error) {
+      log(`IXL screenshot helper could not preload: ${textError(error)}. Canvas-only capture remains available.`, "warn");
+    }
+    return { helperSource, html2canvasSource };
+  })();
+  ixlAnswerHelperAssetsPromise = pending;
+  try {
+    return await pending;
+  } catch (error) {
+    if (ixlAnswerHelperAssetsPromise === pending) ixlAnswerHelperAssetsPromise = null;
+    throw error;
+  }
+}
+
+function ixlUserscriptStorageKey(key) {
+  return `${IXL_USERSCRIPT_STORAGE_PREFIX}${String(key || "").slice(0, 240)}`;
+}
+
+function createIxlUserscriptApi(tab, pageWindow, pageUrl) {
+  const pageDocument = pageWindow.document;
+  const getValue = (key, fallback) => {
+    const stored = safeGetItem(ixlUserscriptStorageKey(key));
+    if (stored === null) return fallback;
+    try { return JSON.parse(stored); } catch { return fallback; }
+  };
+  const setValue = (key, value) => {
+    const storageKey = ixlUserscriptStorageKey(key);
+    try {
+      if (value === undefined) localStorage.removeItem(storageKey);
+      else if (!safeSetItem(storageKey, JSON.stringify(value))) throw new Error("Storage write was rejected");
+    } catch (error) {
+      log(`IXL helper storage write failed: ${textError(error)}`, "warn");
+    }
+  };
+  const addStyle = (css) => {
+    const style = pageDocument.createElement("style");
+    style.dataset.asteroidUserscriptStyle = "ixl-answer-helper";
+    style.textContent = String(css || "");
+    (pageDocument.head || pageDocument.documentElement || pageDocument.body)?.append(style);
+    return style;
+  };
+  const xmlhttpRequest = (details = {}) => {
+    const abortController = new AbortController();
+    const method = String(details.method || "GET").toUpperCase();
+    const timeoutMs = clampNumber(details.timeout, 90000, 1000, 120000);
+    let timedOut = false;
+    let settled = false;
+    const invoke = (name, payload) => {
+      try { if (typeof details[name] === "function") details[name].call(pageWindow, payload); }
+      catch (error) { log(`IXL helper ${name} callback failed: ${textError(error)}`, "warn"); }
+    };
+    const timeout = setTimeout(() => {
+      if (settled) return;
+      timedOut = true;
+      abortController.abort(new DOMException("Userscript request timed out", "TimeoutError"));
+    }, timeoutMs);
+
+    Promise.resolve().then(async () => {
+      const remote = new URL(String(details.url || ""), pageUrl);
+      if (!/^https?:$/.test(remote.protocol)) throw new Error("Userscript requests must use HTTP or HTTPS");
+      const requestHeaders = Object.entries(details.headers && typeof details.headers === "object" ? details.headers : {})
+        .map(([name, value]) => [String(name), String(value)]);
+      const requestBody = details.data === undefined || details.data === null
+        ? null
+        : new TextEncoder().encode(String(details.data)).buffer;
+      invoke("onloadstart", { readyState: 1, finalUrl: remote.href });
+      const response = await transport.request(
+        remote,
+        method,
+        requestBody,
+        requestHeaders,
+        abortController.signal,
+        Math.max(1, timeoutMs / 1000)
+      );
+      const responseText = await transportBodyText(response.body);
+      const responseHeaders = Array.isArray(response.headers)
+        ? response.headers.map((entry) => `${entry[0]}: ${entry[1]}`).join("\r\n")
+        : "";
+      let responseValue = responseText;
+      if (details.responseType === "json") {
+        try { responseValue = JSON.parse(responseText); } catch { responseValue = null; }
+      } else if (details.responseType === "arraybuffer" && response.body instanceof ArrayBuffer) {
+        responseValue = response.body;
+      }
+      const payload = {
+        finalUrl: remote.href,
+        readyState: 4,
+        response: responseValue,
+        responseHeaders,
+        responseText,
+        status: Number(response.status) || 0,
+        statusText: String(response.statusText || "")
+      };
+      settled = true;
+      invoke("onreadystatechange", payload);
+      invoke("onload", payload);
+      invoke("onloadend", payload);
+    }).catch((error) => {
+      if (settled) return;
+      settled = true;
+      const payload = { error, finalUrl: String(details.url || ""), readyState: 4, status: 0, statusText: textError(error) };
+      invoke("onreadystatechange", payload);
+      invoke(timedOut ? "ontimeout" : abortController.signal.aborted ? "onabort" : "onerror", payload);
+      invoke("onloadend", payload);
+    }).finally(() => clearTimeout(timeout));
+
+    return {
+      abort() {
+        if (!settled) abortController.abort(new DOMException("Userscript request aborted", "AbortError"));
+      }
+    };
+  };
+  return { GM_addStyle: addStyle, GM_getValue: getValue, GM_setValue: setValue, GM_xmlhttpRequest: xmlhttpRequest };
+}
+
+async function injectIxlAnswerHelper(tab, pageWindow = tab?.iframe?.contentWindow) {
+  if (!tab || tab.isHome || tab.isSettings || tab.suspended || !pageWindow) return false;
+  const pageUrl = ixlPageUrl(tab, pageWindow);
+  if (!pageUrl) return false;
+  let pageDocument;
+  try { pageDocument = pageWindow.document; } catch { return false; }
+  const root = pageDocument?.documentElement;
+  if (!root || root.dataset.asteroidIxlAnswerHelper) return false;
+  root.dataset.asteroidIxlAnswerHelper = "loading";
+
+  try {
+    const { helperSource, html2canvasSource } = await loadIxlAnswerHelperAssets();
+    if (pageWindow.document !== pageDocument || !isIxlPageUrl(ixlPageUrl(tab, pageWindow))) return false;
+    let html2canvas = pageWindow.html2canvas;
+    if (typeof html2canvas !== "function" && html2canvasSource) {
+      const installHtml2Canvas = pageWindow.Function(`${html2canvasSource}\nreturn globalThis.html2canvas;\n//# sourceURL=asteroid-html2canvas-1.4.1.js`);
+      html2canvas = installHtml2Canvas.call(pageWindow);
+    }
+    const userscriptApi = createIxlUserscriptApi(tab, pageWindow, pageUrl);
+    const runUserscript = pageWindow.Function(
+      "GM_xmlhttpRequest",
+      "GM_addStyle",
+      "GM_getValue",
+      "GM_setValue",
+      "html2canvas",
+      `${helperSource}\n//# sourceURL=asteroid-ixl-answer-helper.user.js`
+    );
+    runUserscript.call(
+      pageWindow,
+      userscriptApi.GM_xmlhttpRequest,
+      userscriptApi.GM_addStyle,
+      userscriptApi.GM_getValue,
+      userscriptApi.GM_setValue,
+      html2canvas
+    );
+    root.dataset.asteroidIxlAnswerHelper = IXL_ANSWER_HELPER_BUILD;
+    log(`IXL Answer Helper ${IXL_ANSWER_HELPER_BUILD} loaded for ${new URL(pageUrl).hostname}`, "ok");
+    return true;
+  } catch (error) {
+    root.dataset.asteroidIxlAnswerHelper = "error";
+    log(`IXL Answer Helper could not start: ${textError(error)}`, "err");
+    return false;
+  }
+}
+
 function installFrameHooks(tab) {
   const hook = tab.sj?.hooks?.init?.pre;
   if (!hook || !globalThis.$scramjet?.Tap?.tap) return;
@@ -850,7 +1056,10 @@ function installFrameHooks(tab) {
       }
       pageWindow.addEventListener("error", (event) => noteCompatibilityPageError(tab, event.error || event.message || "Page script error"), true);
       pageWindow.addEventListener("unhandledrejection", (event) => noteCompatibilityPageError(tab, event.reason || "Unhandled promise rejection"));
-      pageWindow.addEventListener("DOMContentLoaded", () => applyPageEnhancements(tab), { once: true });
+      pageWindow.addEventListener("DOMContentLoaded", () => {
+        applyPageEnhancements(tab);
+        void injectIxlAnswerHelper(tab, pageWindow);
+      }, { once: true });
     } catch (error) { console.warn("Asteroid Browser frame hook failed", error); }
   });
 }
@@ -912,14 +1121,14 @@ function navigate(tab, value, options = {}) {
   log(`Scramjet navigation: ${url}`, "info");
   try { tab.sj.go(url); } catch (error) { tab.loading = false; metrics.errors += 1; saveMetrics(); setStatus("error", "Error"); log(textError(error), "err"); failCompatibilityTrial(tab, `Navigation failed: ${textError(error)}`); }
 }
-function decodeFrameUrl(tab) {
+function decodeFrameUrl(tab, fallback = tab.url) {
   try {
     const current = new URL(tab.iframe.contentWindow.location.href);
     const prefix = new URL(tab.sj.prefix, location.href).pathname;
-    if (!current.pathname.startsWith(prefix)) return tab.url;
+    if (!current.pathname.startsWith(prefix)) return fallback;
     const encoded = current.pathname.slice(prefix.length) + current.search + current.hash;
     return controller.config.codec.decode(encoded);
-  } catch { return tab.url; }
+  } catch { return fallback; }
 }
 function syncAfterLoad(tab) {
   if (!tabs.has(tab.id) || tab.isHome || tab.isSettings || tab.suspended) return;
@@ -937,6 +1146,7 @@ function syncAfterLoad(tab) {
   } catch { tab.title = titleFor(tab.url); }
   addHistory(tab.url, tab.title);
   applyPageEnhancements(tab);
+  void injectIxlAnswerHelper(tab);
   if (tab.compatibilityTrial) {
     if (tab.compatibilityHardTimer) clearTimeout(tab.compatibilityHardTimer);
     tab.compatibilityHardTimer = setTimeout(() => failCompatibilityTrial(tab, "The page never settled after loading"), COMPATIBILITY_HARD_TIMEOUT_MS);
@@ -1240,7 +1450,7 @@ class ResilientTransport {
       : [{ name: "primary", client: this.primary }, { name: "fallback", client: this.fallback }];
     return list.filter(({ client }) => client);
   }
-  async request(remote, method, body, headers, signal) {
+  async request(remote, method, body, headers, signal, timeoutSeconds = settings.timeoutSeconds) {
     metrics.requests += 1; saveMetrics(); setText("stats", `${metrics.requests} requests`);
     noteCompatibilityRequest(remote);
     if (shouldBlockUrl(remote.href)) {
@@ -1262,7 +1472,15 @@ class ResilientTransport {
         const retries = replaySafe ? (name === "primary" ? settings.mainRetries : settings.fallbackRetries) : 0;
         for (let attempt = 0; attempt <= retries; attempt += 1) {
           try {
-            const response = await requestWithTimeout(client, remote, method, body, requestHeaders, signal, settings.timeoutSeconds);
+            const response = await requestWithTimeout(
+              client,
+              remote,
+              method,
+              body,
+              requestHeaders,
+              signal,
+              clampNumber(timeoutSeconds, settings.timeoutSeconds, 1, 120)
+            );
             if (replaySafe && response.status >= 500 && settings.fallback5xx && name === "primary" && this.fallback) throw new Error(`Libcurl received HTTP ${response.status}`);
             if (this.activeName !== name) {
               this.activeName = name;
@@ -1997,6 +2215,7 @@ async function initialize() {
     }
   });
   await controller.wait();
+  void loadIxlAnswerHelperAssets().catch((error) => log(`IXL Answer Helper preload failed: ${textError(error)}`, "warn"));
   const initialTarget = /^https?:\/\//i.test(pendingAsteroidTarget) ? pendingAsteroidTarget : null;
   pendingAsteroidTarget = "";
   createTab(initialTarget);

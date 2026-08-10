@@ -13,6 +13,16 @@ Runtime components:
 - Asteroid OS Shards access and app-target handoff
 - Background research bridge
 - Self-contained compatibility-runtime fallback
+- Built-in IXL Answer Helper 14.0.0 injection for secure `ixl.com` pages
+
+When a proxied page is `https://ixl.com` or an HTTPS IXL subdomain, Asteroid
+Browser loads `userscripts/ixl-answer-helper.user.js` automatically. The browser
+provides isolated userscript settings, style injection, and cross-origin HTTP
+requests through the active Libcurl/Epoxy transport. The helper is not injected
+on non-IXL sites. Its `html2canvas` 1.4.1 requirement is loaded from the exact
+version-pinned jsDelivr URL declared by the supplied userscript; answer solving
+still loads with canvas-only screenshot fallback if that optional dependency is
+temporarily unavailable.
 
 Keep this folder together and serve it through HTTPS or localhost. Development
 source maps, TypeScript declarations, and upstream package archives are omitted

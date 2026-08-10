@@ -25,6 +25,7 @@ const expectedFiles = [
   'THIRD-PARTY-NOTICES.md',
   'transport/epoxy.mjs',
   'transport/libcurl.js',
+  'userscripts/ixl-answer-helper.user.js',
 ];
 
 async function collectFiles(directory, prefix = '') {
@@ -83,6 +84,9 @@ const app = missingFiles.includes('app.mjs') ? '' : await readFile(path.join(bro
 const backgroundResearch = missingFiles.includes('background-research.html')
   ? ''
   : await readFile(path.join(browserDirectory, 'background-research.html'), 'utf8');
+const ixlUserscript = missingFiles.includes('userscripts/ixl-answer-helper.user.js')
+  ? ''
+  : await readFile(path.join(browserDirectory, 'userscripts', 'ixl-answer-helper.user.js'), 'utf8');
 const combined = `${index}\n${serviceWorker}\n${config}\n${app}`;
 const userFacingBrowserSource = `${index}\n${config}\n${app}\n${backgroundResearch}`;
 const legacyBrandMatches = [...userFacingBrowserSource.matchAll(/\u0073\u006d\u0065\u006c\u006c\u0079\s*\u0070\u0072\u006f\u0078\u0079/gi)].map((match) => match[0]);
@@ -111,9 +115,18 @@ const googleSearchIsForced = /const\s+GOOGLE_SEARCH_URL\s*=\s*["']https:\/\/www\
   && /merged\.searchEngine\s*=\s*GOOGLE_SEARCH_URL/.test(app)
   && /merged\.searchEngineName\s*=\s*["']Google["']/.test(app)
   && /return\s+GOOGLE_SEARCH_URL\s*\+\s*encodeURIComponent\(raw\)/.test(app);
+const ixlUserscriptIsIntegrated = /IXL_ANSWER_HELPER_URL\s*=\s*new URL\(["']\.\/userscripts\/ixl-answer-helper\.user\.js["']/.test(app)
+  && /function\s+isIxlPageUrl\s*\(/.test(app)
+  && /host === ["']ixl\.com["'] \|\| host\.endsWith\(["']\.ixl\.com["']\)/.test(app)
+  && /function\s+injectIxlAnswerHelper\s*\(/.test(app)
+  && /void injectIxlAnswerHelper\(tab, pageWindow\)/.test(app)
+  && /void injectIxlAnswerHelper\(tab\)/.test(app)
+  && /GM_xmlhttpRequest/.test(app)
+  && /IXL Answer Helper - Fixed DOM and Selection Support/.test(ixlUserscript)
+  && /@match\s+https:\/\/\*\.ixl\.com\/\*/.test(ixlUserscript);
 
 const checks = [
-  ['all 19 original Asteroid Browser files are present', missingFiles.length === 0],
+  ['all required Asteroid Browser files are present', missingFiles.length === 0],
   ['all required browser files contain data', emptyFiles.length === 0],
   ['browser checksum manifest is populated', checksumEntries.size > 0],
   ['browser files match the supplied checksum manifest', checksumFailures.length === 0],
@@ -127,6 +140,7 @@ const checks = [
   ['Google is the forced search provider for new and existing installations', googleSearchIsForced && /searchEngine\s*:\s*["']https:\/\/www\.google\.com\/search\?q=["']/.test(config)],
   ['the new-tab search control is visibly Google-only', /id=["']ntEngineLabel["']>Google</.test(index) && !/data-engine=/i.test(index)],
   ['no alternate search-provider endpoint remains selectable', nonGoogleSearchProviders.length === 0],
+  ['the bundled IXL userscript injects only on secure ixl.com pages', ixlUserscriptIsIntegrated],
 ];
 
 const failures = checks.filter(([, passed]) => !passed).map(([name]) => name);
