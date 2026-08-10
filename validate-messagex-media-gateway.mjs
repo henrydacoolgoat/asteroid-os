@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.dirname(fileURLToPath(import.meta.url));
 const gateway = 'https://messagex-media.asteroid-messagex.workers.dev';
 const build = 'messagex-v0994-compact-call-preview-permanent-gateway-asteroid-bundled-2026-08-09';
-const asteroidBuild = 'asteroid-os-v0.99.23.4-all-freeperiod-covers-high-performance-games-2026-08-09';
+const asteroidBuild = 'asteroid-os-v0.99.23.4-background-afs-fast-cached-games-2026-08-09';
 const canonical = await readFile(path.join(root, 'messagex-v0.99.4.html'), 'utf8');
 const loader = await readFile(path.join(root, 'MessageX_Latest_Loader_APP_VERSION_SIGNIN_FIXED.html'), 'utf8');
 const asteroid = await readFile(path.join(root, 'index.html'), 'utf8');

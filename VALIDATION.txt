@@ -88,3 +88,11 @@ Preserved behavior
 - FreePeriod passed its expanded dedicated bundle and cover assertions; Asteroid Browser, MessageX desktop/call layout, MessageX media gateway, Supabase Auth hardening, and all inline scripts also passed their release validators.
 - The permanent media endpoint /healthz returned ok=true; /gateway-meta reported backend_online=true, tunnel_mode=named-tunnel, and backend_transport=workers-vpc.
 - This release made no Supabase account, profile, chat, membership, message, storage registry, or laptop media-data changes.
+
+2026-08-09 silent AFS and faster FreePeriod follow-up
+- AFS startup and lock recognition now run without displaying the AFS overlay or exposing an active dialog to assistive input; the ordinary password panel stays visible and focused throughout.
+- The optimized AFS input is 320 pixels wide, the camera requests 480 × 360 at up to 30 FPS, individual recognition passes target 500 ms or less, and the complete silent recognition window is capped at five seconds.
+- If background recognition is unavailable, times out, or does not match, the already-visible password flow remains usable; a successful match still unlocks immediately.
+- FreePeriod starts downloading on pointer, touch, or keyboard intent before the click completes, races the raw GitHub source against a delayed CDN fallback, aborts the slower copy, and deduplicates concurrent requests.
+- Every successfully downloaded game is written to a revisioned OPFS cache without delaying launch, so reopening that game in a later Asteroid OS session reads the local copy before touching the network.
+- The full 300-game catalog, 300 bundled covers, high-performance WebGL bridge, Asteroid Browser files, MessageX permanent gateway, and Supabase Auth rules remain unchanged.

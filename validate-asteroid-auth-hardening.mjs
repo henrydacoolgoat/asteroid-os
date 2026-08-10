@@ -23,6 +23,11 @@ const checks = [
   ['profile restoration cannot query by an unverified username', !source.includes("profiles?select=*&username=eq.")],
   ['transient network failures preserve saved sessions', source.includes('asteroidAuthFailureIsDefinitive(error)') && source.includes('the saved session was preserved')],
   ['session verification timeout is treated as transient', source.includes("asteroidTransientAuthError('Supabase session verification timed out.')")],
+  ['AFS startup and lock verification overlays are visually suppressed', source.includes('#afsOverlay.show[data-mode="startup"],#afsOverlay.show[data-mode="lock"]{display:none!important}')],
+  ['silent AFS is hidden from accessibility and cannot intercept input', source.includes("ui.overlay.toggleAttribute('inert',silent)") && source.includes("ui.overlay.setAttribute('aria-hidden',silent?'true':'false')")],
+  ['the lock-screen password panel is always visible while AFS runs', source.includes("screen.classList.add('password-visible','show')") && source.includes("setTimeout(()=>input?.focus({preventScroll:true}),80)")],
+  ['background AFS targets half-second frames with a five-second recognition window', source.includes('const BACKGROUND_RECOGNITION_MS=5000;') && source.includes('const TARGET_FRAME_MS=500;') && source.includes('lastFrameAt<=TARGET_FRAME_MS')],
+  ['AFS failure keeps the visible password path available', source.includes("onUnavailable:()=>revealAsteroidPasswordPanel()") && source.includes("options.onUnavailable||options.onPassword")],
 ];
 
 const failures = checks.filter(([, passed]) => !passed).map(([name]) => name);

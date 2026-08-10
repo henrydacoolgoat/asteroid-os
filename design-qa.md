@@ -10,5 +10,8 @@
 - Game performance check: the launched game frame is eager and high priority, grants normal fullscreen/audio/gamepad capabilities, and marks itself as Asteroid high-performance mode. WebGL/WebGL2 context requests receive `powerPreference: high-performance`; 2D contexts are passed through unchanged.
 - Browser measurement: 300 cards, 300 distinct local cover URLs, zero blank background images, and 300 cards restored after returning from 2048.
 - Runtime inspection: the 2048 frame reported `loading=eager`, `fetchpriority=high`, `data-asteroid-performance=high`, `tabindex=0`, and the expected permission policy; its injected scripts contained the high-performance WebGL bridge.
+- Silent AFS check: startup and lock modes keep the AFS overlay at `display:none`, `aria-hidden=true`, and `inert`, while the standard lock password panel is always visible and focused. Setup/manage AFS remains visible when intentionally opened from Settings.
+- AFS performance budget: 320-pixel recognition input, 480 × 360 camera request, 500 ms frame target, and a five-second total background recognition deadline.
+- FreePeriod loading check: hover, pointer-down, touch-start, and keyboard focus warm the chosen game; first launches race two sources; subsequent launches use a revisioned persistent local cache.
 
 final result: passed
