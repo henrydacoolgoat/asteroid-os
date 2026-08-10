@@ -95,4 +95,11 @@ Preserved behavior
 - If background recognition is unavailable, times out, or does not match, the already-visible password flow remains usable; a successful match still unlocks immediately.
 - FreePeriod starts downloading on pointer, touch, or keyboard intent before the click completes, races the raw GitHub source against a delayed CDN fallback, aborts the slower copy, and deduplicates concurrent requests.
 - Every successfully downloaded game is written to a revisioned OPFS cache without delaying launch, so reopening that game in a later Asteroid OS session reads the local copy before touching the network.
-- The full 300-game catalog, 300 bundled covers, high-performance WebGL bridge, Asteroid Browser files, MessageX permanent gateway, and Supabase Auth rules remain unchanged.
+- The full 300-game catalog, 300 visible cover presentations, high-performance WebGL bridge, Asteroid Browser files, MessageX permanent gateway, and Supabase Auth rules remain unchanged.
+
+2026-08-09 source-art cover correction
+- Removed all 300 game-loading screenshots from the FreePeriod cover directory.
+- The games remain the exact 300-item CoolDude2349/Offline-HTML-Games-Pack catalog. The old Canvas Free-for-Teacher artwork archive is no longer downloadable because that service was discontinued, so the build never waits on or fetches that dead Canvas URL.
+- 170 games now use locally bundled published thumbnail, logo, splash, or icon assets sourced from public GitHub game projects. Their exact source URLs and local filenames are recorded in freeperiod-cover-manifest.json.
+- The other 130 games use deterministic FreePeriod title artwork rendered directly by the catalog. These are visible covers, not blank cards and not screenshots of a running game.
+- Every one of the 300 catalog entries has exactly one cover mode, all 170 source-art files are bundled and signature-checked, and no cover depends on Canvas or another runtime image request.

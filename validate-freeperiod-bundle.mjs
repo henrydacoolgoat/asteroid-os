@@ -21,25 +21,31 @@ const gameNames = manifestMatch ? JSON.parse(manifestMatch[1]) : [];
 const startupFunction = html.match(/async function initZipButtons\(\) \{([\s\S]*?)\n\}/)?.[1] || '';
 const primeCoversFunction = html.match(/function primeFallbackGameCovers\(\) \{([\s\S]*?)\n\}/)?.[1] || '';
 const coverDirectory = path.join(projectDirectory, 'freeperiod-covers');
-const expectedCoverFiles = gameNames.map(name => {
-  const stem = name.replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'game';
-  return `${stem}.jpg`;
-});
+const coverManifest = JSON.parse(await readFile(path.join(projectDirectory, 'freeperiod-cover-manifest.json'), 'utf8'));
+const coverManifestEntries = Object.entries(coverManifest.games || {});
+const publishedCoverEntries = coverManifestEntries.filter(([, entry]) => entry?.file);
+const titleCardEntries = coverManifestEntries.filter(([, entry]) => entry?.type === 'freeperiod-title-card');
+const expectedCoverFiles = publishedCoverEntries.map(([, entry]) => path.basename(entry.file));
 const bundledCoverFiles = await readdir(coverDirectory).catch(() => []);
 const coverResults = await Promise.all(expectedCoverFiles.map(async fileName => {
   try {
     const bytes = await readFile(path.join(coverDirectory, fileName));
+    const jpeg = bytes.length > 900 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+    const png = bytes.length > 900 && bytes.subarray(0, 8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]));
+    const webp = bytes.length > 900 && bytes.subarray(0, 4).toString('ascii') === 'RIFF' && bytes.subarray(8, 12).toString('ascii') === 'WEBP';
     return {
       fileName,
       bytes: bytes.length,
-      jpeg: bytes.length > 4_000 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff,
+      validImage: jpeg || png || webp,
     };
   } catch {
-    return { fileName, bytes: 0, jpeg: false };
+    return { fileName, bytes: 0, validImage: false };
   }
 }));
 const missingCoverFiles = coverResults.filter(result => result.bytes === 0).map(result => result.fileName);
-const invalidCoverFiles = coverResults.filter(result => result.bytes > 0 && !result.jpeg).map(result => result.fileName);
+const invalidCoverFiles = coverResults.filter(result => result.bytes > 0 && !result.validImage).map(result => result.fileName);
+const unexpectedCoverFiles = bundledCoverFiles.filter(fileName => !expectedCoverFiles.includes(fileName));
+const embeddedCoverMap = Object.fromEntries(publishedCoverEntries.map(([game, entry]) => [game, entry.file]));
 const scriptPattern = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
 let executableScripts = 0;
 let scriptNumber = 0;
@@ -100,11 +106,16 @@ const checks = [
   ['downloaded games persist in a revisioned local OPFS cache', html.includes("const FREE_PERIOD_GAME_CACHE_DIR = 'apps/freeperiod/runtime-cache';") && html.includes('freePeriodOPFS?.readBlob?.(freePeriodCachedGamePath(name))') && html.includes('freePeriodOPFS?.writeBlob?.(') && html.includes('encodeURIComponent(FREE_PERIOD_LIBRARY_REVISION)')],
   ['pointer, touch, and keyboard intent warm the selected game before its click', html.includes('pointerenter", warmGame') && html.includes('pointerdown", warmGame') && html.includes('touchstart", warmGame') && html.includes('focus", warmGame')],
   ['rejected six-game fallback is not bundled', !source.includes('freeperiod-games/') && !html.includes('FREE_PERIOD_STARTER_GAMES')],
-  ['FreePeriod uses its complete bundled cover set at startup', startupFunction.includes('primeFallbackGameCovers();') && !startupFunction.includes('restoreOriginalGameCovers();') && primeCoversFunction.includes('FREE_PERIOD_LOCAL_COVER_BASE + freePeriodLocalCoverName(gameName)')],
-  ['all 300 game names map to unique local cover filenames', expectedCoverFiles.length === 300 && new Set(expectedCoverFiles).size === 300],
-  ['the bundled cover directory contains exactly 300 JPEG files', bundledCoverFiles.length === 300 && bundledCoverFiles.every(fileName => /\.jpg$/i.test(fileName))],
-  ['every catalog game has a bundled cover file', missingCoverFiles.length === 0],
-  ['every bundled cover is a nontrivial JPEG image', invalidCoverFiles.length === 0],
+  ['the cover manifest defines one non-screenshot presentation for every game', coverManifest.games_total === 300 && coverManifestEntries.length === 300 && gameNames.every(name => coverManifest.games[name])],
+  ['the cover policy explicitly forbids runtime game screenshots', coverManifest.policy.includes('Never use screenshots captured from a running game') && html.includes('published-source-art-or-title-card-never-runtime-screenshots')],
+  ['published art comes from traceable public GitHub assets', publishedCoverEntries.length >= 150 && publishedCoverEntries.every(([, entry]) => /^https:\/\/raw\.githubusercontent\.com\//.test(entry.source || ''))],
+  ['games without published art use visible deterministic title cards', titleCardEntries.length > 0 && titleCardEntries.every(([, entry]) => entry.file === null && entry.source === null) && html.includes('applyFreePeriodTitleCover(btn, trimmedName)') && html.includes('data-cover-monogram')],
+  ['FreePeriod embeds the exact published-art manifest', Object.entries(embeddedCoverMap).every(([game, file]) => html.includes(JSON.stringify(game) + ':' + JSON.stringify(file)))],
+  ['FreePeriod applies published art and title cards before rendering the catalog', startupFunction.includes('primeFallbackGameCovers();') && !startupFunction.includes('restoreOriginalGameCovers();') && primeCoversFunction.includes('FREE_PERIOD_COVER_ASSETS[gameName]') && primeCoversFunction.includes('freePeriodTitleCoverKeys.add(key)')],
+  ['all published cover filenames are unique', expectedCoverFiles.length === publishedCoverEntries.length && new Set(expectedCoverFiles).size === expectedCoverFiles.length],
+  ['the bundled cover directory contains only the manifest art files', bundledCoverFiles.length === expectedCoverFiles.length && unexpectedCoverFiles.length === 0],
+  ['every published cover file is bundled', missingCoverFiles.length === 0],
+  ['every bundled cover is a nontrivial JPEG, PNG, or WebP image', invalidCoverFiles.length === 0],
   ['game frames request eager high-priority loading', html.includes('iframe.loading = "eager";') && html.includes('iframe.setAttribute("fetchpriority", "high")')],
   ['game frames receive fullscreen, audio, and gamepad permissions', html.includes('autoplay; fullscreen; gamepad') && html.includes('iframe.setAttribute("allowfullscreen", "")')],
   ['WebGL games request the high-performance GPU path without changing 2D contexts', html.includes('attributes.powerPreference="high-performance"') && html.includes('attributes.desynchronized=true') && html.includes('return originalGetContext.call(this,type,options);')],
@@ -127,8 +138,10 @@ const report = {
   executableScripts,
   manifestGames: gameNames.length,
   bundledCovers: bundledCoverFiles.length,
+  titleCards: titleCardEntries.length,
   missingCoverFiles,
   invalidCoverFiles,
+  unexpectedCoverFiles,
   localReferences,
   passed: checks.length - failures.length,
   total: checks.length,

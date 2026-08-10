@@ -13,5 +13,6 @@
 - Silent AFS check: startup and lock modes keep the AFS overlay at `display:none`, `aria-hidden=true`, and `inert`, while the standard lock password panel is always visible and focused. Setup/manage AFS remains visible when intentionally opened from Settings.
 - AFS performance budget: 320-pixel recognition input, 480 × 360 camera request, 500 ms frame target, and a five-second total background recognition deadline.
 - FreePeriod loading check: hover, pointer-down, touch-start, and keyboard focus warm the chosen game; first launches race two sources; subsequent launches use a revisioned persistent local cache.
+- Cover-source check: no cover is captured from a running game. Every one of the 300 cards uses either a locally bundled published GitHub thumbnail/logo/splash/icon or the deterministic FreePeriod monogram title-card treatment; the dead Canvas archive is not requested.
 
 final result: passed
