@@ -1,4 +1,4 @@
-# Laptop-backed MessageX storage
+# Asteroid ONE and laptop-backed MessageX storage
 
 ## No administrator access required
 
@@ -17,8 +17,8 @@ The currently installed service lives at:
 
 ## Opening Asteroid OS
 
-The laptop service does not serve this package's `index.html`; it is a media-only
-backend. Open or host Asteroid OS separately. The MessageX client discovers the
+The laptop service does not serve this package's `index.html`; it is the private
+Asteroid ONE and MessageX storage backend. Open or host Asteroid OS separately. The MessageX client discovers the
 permanent media gateway through the singleton Supabase row
 `public.media_storage_config`, and the media server allows the required
 cross-origin browser requests.
@@ -77,6 +77,37 @@ time: the private Supabase queue holds the temporary copy until automatic
 recovery. The laptop and tunnel must be online when another device views the
 final protected media. The recipient does not need to be online at send time.
 
+## Asteroid ONE Files and settings
+
+Asteroid ONE extends the same no-admin laptop service to the Asteroid OS Files,
+Photos, Camera, Settings, Notes, and Contacts experience:
+
+- New Files imports and camera captures are written atomically beneath
+  `storage\asteroid-one\`. This directory is separate from MessageX media.
+- Supabase stores account-owned file and folder metadata so all devices signed
+  into the same account see the same names, paths, sizes, and timestamps.
+- The file bytes remain on this laptop. A different device gets only a
+  short-lived signed download ticket after the laptop verifies its Supabase
+  account token and ownership of the requested file.
+- If the laptop is offline at upload time, the private
+  `messagex-media-queue` bucket carries the temporary Asteroid ONE object. Its
+  path is restricted to the signed-in account. The laptop claims work through
+  a service-only function, verifies the byte length and SHA-256, switches the
+  file to a stable `asteroid-one:` reference, and deletes the temporary object.
+- The laptop checks the queue every five seconds. The web app also retries on
+  reconnect, focus, visibility change, and a 30-second signed-in sync interval.
+- Supported Settings, Notes, Contacts, Photos metadata, the Files manifest, and
+  a Shards status summary are saved in an account-specific JSON snapshot under
+  the Asteroid ONE directory. Passwords, access tokens, session data, and the
+  Gemini API key are intentionally excluded.
+- Supabase remains the live cross-device sync and authentication authority.
+  The Asteroid ONE snapshot is the laptop copy and recovery record; it does not
+  turn the laptop into an account or password server.
+
+The permanent Asteroid ONE directory and account-state files should be included
+in laptop backups. The private Supabase queue is temporary transport, not a
+backup, and is designed to empty after verified recovery.
+
 ## Upload behavior
 
 - The MessageX client uploads one `file` field as `multipart/form-data` over HTTP; the server also keeps accepting the previous raw-media request shape for older clients.
@@ -107,7 +138,8 @@ battery. Critical-battery protection is preserved, so a drained battery can
 still stop the server. Never operate the closed laptop in a bag or enclosed
 space.
 
-Back up `local-storage\storage\chat-media` regularly. The Supabase queue is a
+Back up `local-storage\storage\chat-media` and
+`local-storage\storage\asteroid-one` regularly. The Supabase queue is a
 delivery buffer, not a backup: its temporary copy is deleted after the laptop
 verifies the permanent file. Back up the local `config\media-signing-secret.txt`
 with the media directory.

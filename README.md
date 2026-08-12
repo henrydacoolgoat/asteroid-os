@@ -1,8 +1,30 @@
-# Asteroid OS v0.99.23.4 — complete GitHub Pages release
+# Asteroid OS v0.99.23.5 — Asteroid ONE GitHub Pages release
 
 This build preserves the v0.99.23.4 performance and direct-username changes and
 includes laptop-backed MessageX media storage, FreePeriod, MessageX, and the
 complete Asteroid Browser runtime.
+
+## Asteroid ONE laptop storage
+
+- The Files app is now the Asteroid ONE account drive. New imported files,
+  camera captures, and Photos content are saved permanently under the
+  normal-user laptop service's separate `storage\asteroid-one` directory.
+- Files are account-scoped. A user can sign in on a phone, tablet, Chromebook,
+  or another computer, see the same folder structure and timestamps, and open
+  the permanent laptop copy through a short-lived protected ticket.
+- If the laptop or Cloudflare tunnel is unavailable, the browser uploads the
+  file to a private temporary Supabase queue. The laptop polls every five
+  seconds, saves the exact bytes atomically, verifies both length and SHA-256,
+  updates the stable file record, and only then deletes the temporary object.
+- System settings, Notes, Contacts, Photos metadata, the Files manifest, and a
+  Shards status summary are included in an account-scoped recovery snapshot on
+  Asteroid ONE. Supabase remains the normal cross-device synchronization and
+  authentication system, so the app still works while the laptop is offline.
+- Passwords, Supabase sessions, bearer tokens, and Gemini API keys are never
+  written into an Asteroid ONE account snapshot.
+- Asteroid ONE is laptop storage, not permanent cloud storage. Back up
+  `storage\asteroid-one` and `storage\chat-media` as part of normal laptop
+  backups.
 
 ## Asteroid Browser and GitHub Pages
 
@@ -90,7 +112,8 @@ complete Asteroid Browser runtime.
 - Protected media can be forwarded only after the laptop verifies the sender is
   a member of both the source and destination chats.
 
-The laptop service is a media-only backend and does not host this `index.html`.
+The laptop service stores MessageX media, Asteroid ONE Files, and account
+recovery snapshots; it does not host this `index.html`.
 Open or host Asteroid OS separately. MessageX discovers the current media API
 through Supabase, and the laptop server supports the required cross-origin
 browser requests. The desktop MessageX app, Contacts, MessageX notifications,
@@ -103,7 +126,8 @@ The normal-user supervisor starts automatically after the Windows owner signs
 in. It restarts the server, the same named-tunnel connector, and the Supabase
 heartbeat without hosting Asteroid OS itself. Supabase retains accounts, chats,
 messages, and Asteroid OS sync data; the laptop retains media under
-`storage\chat-media`. A reboot replaces only disposable process IDs; the tunnel
+`storage\chat-media` and account files under `storage\asteroid-one`. A reboot
+replaces only disposable process IDs; the tunnel
 UUID and permanent `workers.dev` gateway address do not change. See
 `RESTART_RECOVERY_TEST.json` for the forced recovery validation performed on
 2026-08-06.
@@ -120,6 +144,18 @@ Revamped AI remains enabled by default. The existing performance pass keeps:
 - Asteroid Browser for live web knowledge;
 - Gemini API as optional cloud computing; and
 - silent MessageX sending with an exact top confirmation banner.
+
+## Comet live voice reliability
+
+- Tapping Comet's voice button now requests microphone permission immediately
+  while the browser still recognizes the user gesture. This restores the
+  permission prompt on Android, WebView-based launchers, and mobile Chromium.
+- The temporary permission-check stream is released before Web Speech opens the
+  microphone, avoiding the competing-capture failure that left Comet listening
+  without receiving speech on some devices.
+- Enhanced microphone constraints fall back to basic audio, and denied,
+  missing, busy, or unsupported microphones now show a specific recovery
+  message instead of silently stopping.
 
 ## Direct MessageX usernames
 
