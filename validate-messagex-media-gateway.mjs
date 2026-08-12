@@ -5,8 +5,8 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const gateway = 'https://messagex-media.asteroid-messagex.workers.dev';
-const build = 'messagex-v0994-compact-call-preview-permanent-gateway-asteroid-bundled-2026-08-09';
-const asteroidBuild = 'asteroid-os-v0.99.23.4-source-cover-art-fast-cached-games-2026-08-09';
+const build = 'messagex-v0994-permanent-gateway-media-recovery-2026-08-12';
+const asteroidBuild = 'asteroid-os-v0.99.23.4-messagex-media-recovery-2026-08-12';
 const canonical = await readFile(path.join(root, 'messagex-v0.99.4.html'), 'utf8');
 const loader = await readFile(path.join(root, 'MessageX_Latest_Loader_APP_VERSION_SIGNIN_FIXED.html'), 'utf8');
 const asteroid = await readFile(path.join(root, 'index.html'), 'utf8');
@@ -80,7 +80,11 @@ const checks = [
   ['uploads forward the current Supabase bearer session', canonical.includes('Authorization: uploadHeaders.Authorization')],
   ['uploads use a multipart file field', canonical.includes('const uploadForm = new FormData();') && canonical.includes("uploadForm.append('file', originalFile") && canonical.includes('body: uploadForm')],
   ['browser sets the multipart boundary automatically', !canonical.includes("'Content-Type': cleanType")],
-  ['media tickets forward the current Supabase bearer session', canonical.includes("if (!authHeaders.Authorization) throw new Error('Sign in to view this media.')")],
+  ['media tickets forward the current Supabase bearer session', canonical.includes("if (!authHeaders.Authorization || (!sessionResult?.data?.session && sessionResult?.error))")],
+  ['expired media sessions refresh and retry once', canonical.includes('if (response.status === 401 && !forceSessionRefresh)') && canonical.includes('return requestMessageXMediaTicket(pathname, chatId, true);')],
+  ['concurrent media renders share one signed-ticket request', canonical.includes('const messageXMediaTicketPromises = new Map();') && canonical.includes('const existingPromise = messageXMediaTicketPromises.get(cacheKey);')],
+  ['media render waits for the image or player to really load', canonical.includes('await waitForMessageXMediaLoad(media, authorizedUrl, hydrationId)')],
+  ['failed media downloads recover automatically and expose retry', canonical.includes("setMessageXMediaStatus(container, 'Reconnecting to chat media…')") && canonical.includes("retry.textContent = 'Retry media';") && canonical.includes("window.addEventListener('online'")],
   ['protected media tickets use the upload-proven authenticated POST transport', canonical.includes("await fetchMessageXMediaStorage(\n        '/api/media-ticket'") && canonical.includes("body: JSON.stringify({ path: pathname, chat_id: chatId })") && canonical.includes("'X-MessageX-Upload': '1'")],
   ['registry lookup and upload fetch share the retry boundary', retryTryIndex >= 0 && retryLookupIndex > retryTryIndex],
   ['media requests use five bounded attempts', canonical.includes('const MESSAGE_X_MEDIA_RETRY_DELAYS_MS = [0, 750, 2000, 5000, 10000];') && retryFunction.includes('attempt < MESSAGE_X_MEDIA_RETRY_DELAYS_MS.length')],
