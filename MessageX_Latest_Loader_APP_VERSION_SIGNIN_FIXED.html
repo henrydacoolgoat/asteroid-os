@@ -22540,7 +22540,7 @@ body.has-custom-wallpaper:is(
     const MESSAGE_X_MEDIA_GATEWAY_ORIGIN = 'https://messagex-media.asteroid-messagex.workers.dev';
     const MESSAGE_X_MEDIA_CONFIG_TTL_MS = 5000;
     const MESSAGE_X_MEDIA_RETRYABLE_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504, 521, 522, 523, 524, 525, 526, 530]);
-    const MESSAGE_X_MEDIA_RETRY_DELAYS_MS = [0, 750, 2000];
+    const MESSAGE_X_MEDIA_RETRY_DELAYS_MS = [0, 750, 2000, 5000, 10000];
     const MSG_PAGE_SIZE = 40;
     const MSG_TOP_LOAD_THRESHOLD = 120;
     let messagePaging = {
@@ -26140,14 +26140,15 @@ body.has-custom-wallpaper:is(
           if (!uploadHeaders.Authorization) throw new Error('Your secure session expired. Sign in again.');
           const cleanType = (originalFile.type || 'application/octet-stream').split(';')[0].trim();
           const uploadPath = `/api/upload?chat_id=${encodeURIComponent(activeChatId)}&filename=${encodeURIComponent(originalFile.name || 'upload')}`;
+          const uploadForm = new FormData();
+          uploadForm.append('file', originalFile, originalFile.name || 'upload');
           const uploadRequest = await fetchMessageXMediaStorage(uploadPath, {
             method: 'POST',
             headers: {
               Authorization: uploadHeaders.Authorization,
-              'Content-Type': cleanType,
               'X-MessageX-Upload': '1'
             },
-            body: originalFile
+            body: uploadForm
           }, true);
           const res = uploadRequest.response;
           const uploadBody = await res.text().catch(() => '');

@@ -58,6 +58,8 @@ prevents a changed registry hostname from receiving a user's bearer token.
 
 ## Upload behavior
 
+- The MessageX client uploads one `file` field as `multipart/form-data` over HTTP; the server also keeps accepting the previous raw-media request shape for older clients.
+- Media requests use five bounded attempts so a brief tunnel reconnection or Cloudflare edge failure does not immediately fail a send.
 - Maximum file size: 100 MB.
 - Accepted content: common image, video, and audio MIME types.
 - Rejected content: HTML, JavaScript, SVG, executables, and non-media files.
