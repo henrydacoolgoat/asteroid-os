@@ -84,6 +84,7 @@ const checks = [
   ['expired media sessions refresh and retry once', canonical.includes('if (response.status === 401 && !forceSessionRefresh)') && canonical.includes('return requestMessageXMediaTicket(pathname, chatId, true);')],
   ['concurrent media renders share one signed-ticket request', canonical.includes('const messageXMediaTicketPromises = new Map();') && canonical.includes('const existingPromise = messageXMediaTicketPromises.get(cacheKey);')],
   ['media render waits for the image or player to really load', canonical.includes('await waitForMessageXMediaLoad(media, authorizedUrl, hydrationId)')],
+  ['pre-append message rendering does not cancel media hydration', canonical.includes('if (!media) return;') && !canonical.includes('if (!media || !container.isConnected) return;')],
   ['failed media downloads recover automatically and expose retry', canonical.includes("setMessageXMediaStatus(container, 'Reconnecting to chat media…')") && canonical.includes("retry.textContent = 'Retry media';") && canonical.includes("window.addEventListener('online'")],
   ['protected media tickets use the upload-proven authenticated POST transport', canonical.includes("await fetchMessageXMediaStorage(\n        '/api/media-ticket'") && canonical.includes("body: JSON.stringify({ path: pathname, chat_id: chatId })") && canonical.includes("'X-MessageX-Upload': '1'")],
   ['registry lookup and upload fetch share the retry boundary', retryTryIndex >= 0 && retryLookupIndex > retryTryIndex],

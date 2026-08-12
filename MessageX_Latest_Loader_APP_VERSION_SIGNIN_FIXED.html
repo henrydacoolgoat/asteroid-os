@@ -22789,7 +22789,10 @@ body.has-custom-wallpaper:is(
     }
     async function hydrateProtectedMessageXMedia(container, value, chatId, recoveryAttempt = 0) {
       const media = container.querySelector('.msg-image, .msg-video, .msg-audio');
-      if (!media || !container.isConnected) return;
+      // renderMessages starts hydration immediately before it appends the message
+      // element to the document. The async ticket request gives the element time
+      // to connect, so only require that the media element itself exists here.
+      if (!media) return;
       const hydrationId = String(++messageXMediaHydrationSequence);
       container.dataset.messagexMediaHydration = hydrationId;
       media.style.display = 'none';
