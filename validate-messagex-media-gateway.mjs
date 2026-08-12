@@ -5,12 +5,15 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const gateway = 'https://messagex-media.asteroid-messagex.workers.dev';
-const build = 'messagex-v0994-permanent-gateway-media-recovery-2026-08-12';
+const build = 'messagex-v0994-supabase-offline-media-queue-2026-08-12';
 const asteroidBuild = 'asteroid-os-v0.99.23.4-messagex-media-recovery-2026-08-12';
 const normalizeLineEndings = value => value.replace(/\r\n/g, '\n');
 const canonical = normalizeLineEndings(await readFile(path.join(root, 'messagex-v0.99.4.html'), 'utf8'));
 const loader = normalizeLineEndings(await readFile(path.join(root, 'MessageX_Latest_Loader_APP_VERSION_SIGNIN_FIXED.html'), 'utf8'));
 const asteroid = normalizeLineEndings(await readFile(path.join(root, 'index.html'), 'utf8'));
+const queueMigration = normalizeLineEndings(await readFile(path.join(root, 'supabase', 'migrations', '20260812143000_add_messagex_media_queue.sql'), 'utf8'));
+const queueFunction = normalizeLineEndings(await readFile(path.join(root, 'supabase', 'functions', 'messagex-media-queue', 'index.ts'), 'utf8'));
+const profileQueueMigration = normalizeLineEndings(await readFile(path.join(root, 'supabase', 'migrations', '20260812160000_add_messagex_profile_media_queue.sql'), 'utf8'));
 
 const startMarker = '<script id="messageXEmbeddedSource" type="text/plain">';
 const contentStart = asteroid.indexOf(startMarker) + startMarker.length;
@@ -95,11 +98,18 @@ const checks = [
   ['fault injection recovers from a retryable gateway response', gatewayRecovery.ok && gatewayRecovery.status === 201 && gatewayRecovery.registryCalls === 2 && gatewayRecovery.gatewayCalls === 2 && gatewayRecovery.invalidations === 1],
   ['fault injection never exposes the raw Failed to fetch message', !normalizedNetworkFailure.ok && normalizedNetworkFailure.registryCalls === 3 && !/failed to fetch/i.test(normalizedNetworkFailure.error) && /try the photo again/i.test(normalizedNetworkFailure.error)],
   ['photo receipt tickets fall through to the resilient request path', canonical.includes("try { storageOrigin = await refreshMessageXMediaStorage(); } catch (_) {}") && canonical.includes('const ticketRequest = await fetchMessageXMediaStorage(')],
-  ['a photo message is inserted only after laptop upload confirmation', uploadRequestIndex >= 0 && validatedMediaIndex > uploadRequestIndex && messageInsertIndex > validatedMediaIndex],
+  ['a direct photo message is inserted only after laptop upload confirmation', uploadRequestIndex >= 0 && validatedMediaIndex > uploadRequestIndex && messageInsertIndex > validatedMediaIndex],
+  ['offline media falls back to a private Supabase queue', canonical.includes("const MESSAGE_X_MEDIA_QUEUE_BUCKET = 'messagex-media-queue';") && canonical.includes('await enqueueMessageXMedia(originalFile') && queueMigration.includes("'messagex-media-queue',\n  'messagex-media-queue',\n  false")],
+  ['the queue creates the durable message atomically through the service function', queueFunction.includes('rpc("messagex_enqueue_media"') && queueMigration.includes("'messagex-queued:' || p_queue_id::text")],
+  ['queued media is checksum verified before temporary deletion', canonical.includes("crypto.subtle.digest('SHA-256'") && queueMigration.includes('queued.sha256 <> lower(p_sha256)') && queueFunction.includes('temporary_copy_deleted: true')],
+  ['queued messages automatically become stable laptop references', queueMigration.includes('set media_url = p_laptop_media_url') && canonical.includes("event: 'UPDATE'") && canonical.includes('el.replaceWith(newEl)')],
+  ['profile photos use the same private offline queue', canonical.includes("const MESSAGE_X_PROFILE_QUEUED_PREFIX = 'messagex-profile-queued:'") && canonical.includes("action: 'enqueue_profile'") && profileQueueMigration.includes("kind in ('message', 'profile')")],
+  ['profile photos become protected laptop references automatically', canonical.includes("const MESSAGE_X_PROFILE_LAPTOP_PREFIX = 'messagex-profile-laptop:'") && canonical.includes("'/api/profile-media-ticket'") && profileQueueMigration.includes("set avatar_url=p_laptop_media_url")],
+  ['profile queue cleanup also requires checksum completion', queueFunction.includes('handleEnqueueProfile') && queueFunction.includes('handleComplete') && queueFunction.includes('temporary_copy_deleted: true')],
   ['recipient presence never gates a durable media send', messageInsertIndex >= 0 && !sendFunction.includes('is_online') && !sendFunction.includes('onlineUsers.has')],
   ['missed durable messages reload after app resume and network reconnect', canonical.includes('function refreshDurableMessagesAfterResume()') && canonical.includes("window.addEventListener('online', refreshDurableMessagesAfterResume)") && canonical.includes('await loadMessages();')],
   ['each account login reloads its durable chat list', canonical.includes('function enterApp()') && canonical.includes('loadChats();')],
-  ['message rows preserve and display their original send timestamp', sendFunction.includes('created_at: new Date().toISOString()') && canonical.includes('${formatTime(m.created_at)}')],
+  ['message rows preserve and display their original send timestamp', sendFunction.includes('const sentAt = new Date().toISOString()') && sendFunction.includes('created_at: sentAt') && sendFunction.includes('sentAt,') && canonical.includes('${formatTime(m.created_at)}')],
   ['the full OS reads MessageX only from its embedded source', asteroid.includes("const source=document.getElementById(MESSAGE_X_DIRECT_EMBED_ID);") && !asteroid.includes('fetch(MESSAGE_X_BUNDLED_FILE')],
   ['the full OS mounts the validated embedded client with srcdoc', asteroid.includes('frame.srcdoc=html;') && asteroid.includes("meta[name=\"messagex-build\"]") && asteroid.includes('===MESSAGE_X_BUNDLED_BUILD')],
   ['the Asteroid desktop MessageX app mounts the shared embedded frame', asteroid.includes('async function mountMessageXFrame(root)') && asteroid.includes('const frame=await prepareMessageXInBackground();')],

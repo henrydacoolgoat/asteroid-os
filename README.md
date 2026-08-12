@@ -51,6 +51,13 @@ complete Asteroid Browser runtime.
 
 - New MessageX photos, videos, drawings, and voice/audio files upload to the
   owner's laptop instead of the Supabase `chat-media` bucket.
+- Profile photos use the same laptop-backed storage and protected ticket flow.
+- If the laptop is unavailable, MessageX places the media in the private
+  `messagex-media-queue` Supabase bucket and creates the durable message (or
+  profile update) with its original timestamp. The laptop checks every five
+  seconds after it starts, saves and SHA-256-verifies the bytes, changes the
+  logical reference to the permanent laptop path, and only then deletes the
+  temporary Supabase object.
 - Supabase continues to store accounts, chats, message rows, realtime events,
   the permanent media gateway, and the laptop's online heartbeat. It remains
   the only account and password authority.
@@ -76,6 +83,8 @@ complete Asteroid Browser runtime.
   the chat. MessageX requests a short-lived signed URL through an authenticated
   POST ticket request; raw laptop media paths are not public. The legacy GET
   ticket route remains available for older clients.
+- Laptop-backed profile photos also require a signed-in MessageX session; raw
+  profile-media paths are not public.
 - Username/password login remains handled by Supabase Auth. The laptop receives
   only the resulting access token and never receives or saves a password.
 - Protected media can be forwarded only after the laptop verifies the sender is

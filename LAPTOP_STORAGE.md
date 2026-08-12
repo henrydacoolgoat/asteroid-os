@@ -44,12 +44,14 @@ logical `messagex-laptop:` paths, so a Windows or tunnel-process restart never
 requires rewriting old messages.
 
 The packaged client retries both the registry lookup and the media request in a
-single three-attempt boundary. It never inserts the Supabase message row for a
-new photo until the laptop has returned and MessageX has validated the stored
-media path. Recipients use the same resilient path when requesting a protected
-media ticket. The current client uses an authenticated JSON POST ticket request,
-which follows the cross-network request shape already proven by media uploads;
-the server retains its legacy GET ticket route for older builds.
+single bounded attempt sequence. When the laptop stays unavailable, it uploads
+the bytes to the private Supabase `messagex-media-queue` bucket. Supabase creates
+the durable queued message with the original send timestamp. The laptop checks
+for work every five seconds after startup, streams the object to disk, verifies
+its byte count and SHA-256 checksum, changes the message to a stable
+`messagex-laptop:` reference, and only then deletes the temporary cloud object.
+Profile photos use the same process and become protected
+`messagex-profile-laptop:` references.
 
 The packaged MessageX client pins authenticated media requests to
 `https://messagex-media.asteroid-messagex.workers.dev`. Supabase must advertise
@@ -70,10 +72,10 @@ account's other devices, while every device retrieves the bytes from this one
 laptop-backed media service.
 
 The image, audio, or video bytes are written atomically under
-`storage\chat-media\` on this laptop before the Supabase message is created. The
-laptop service and Cloudflare Tunnel therefore need to be running while a new
-media file is uploaded and whenever another device needs to view it; the
-recipient's device does not need to be online at send time.
+`storage\chat-media\` on this laptop. The laptop and tunnel can be off at send
+time: the private Supabase queue holds the temporary copy until automatic
+recovery. The laptop and tunnel must be online when another device views the
+final protected media. The recipient does not need to be online at send time.
 
 ## Upload behavior
 
@@ -96,6 +98,8 @@ recipient's device does not need to be online at send time.
   user is verified as a member of both chats.
 - New bytes: `local-storage\storage\chat-media`.
 - Existing Supabase Storage objects: left unchanged.
+- Offline fallback objects are private and temporary; they are removed only
+  after the laptop reports the matching size and SHA-256 checksum.
 
 The laptop must remain plugged in, signed in, awake, online, and ventilated.
 Closing the lid and ordinary sleep/hibernate timers are disabled on AC and
@@ -103,9 +107,10 @@ battery. Critical-battery protection is preserved, so a drained battery can
 still stop the server. Never operate the closed laptop in a bag or enclosed
 space.
 
-Back up `local-storage\storage\chat-media` regularly. New laptop-backed uploads
-do not have another media copy unless a separate backup is made. Back up the
-local `config\media-signing-secret.txt` with it.
+Back up `local-storage\storage\chat-media` regularly. The Supabase queue is a
+delivery buffer, not a backup: its temporary copy is deleted after the laptop
+verifies the permanent file. Back up the local `config\media-signing-secret.txt`
+with the media directory.
 
 Supabase retains accounts, chats, message rows, chat membership, and Asteroid OS
 sync records across laptop restarts. The laptop retains its media directory and
