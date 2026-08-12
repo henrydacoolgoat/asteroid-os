@@ -39873,13 +39873,31 @@ Select OK to consent.`);
 <script id="messagex-v0994-fast-bootstrap-runtime">
 (() => {
   'use strict';
-  window.MESSAGE_X_BUILD = 'messagex-v0994-post-ticket-resilient-permanent-gateway-2026-08-06';
+  window.MESSAGE_X_BUILD = 'messagex-v0994-durable-offline-media-delivery-2026-08-12';
   window.MESSAGE_X_BACKEND_CONTRACT = 'v0994-fast-bootstrap-chat-call-guards';
+  let durableMessageResumeTimer = null;
+  function refreshDurableMessagesAfterResume() {
+    clearTimeout(durableMessageResumeTimer);
+    durableMessageResumeTimer = setTimeout(async () => {
+      try {
+        if (typeof currentUser === 'undefined' || !currentUser) return;
+        if (typeof activeChatId === 'undefined' || !activeChatId) return;
+        if (typeof loadMessages !== 'function') return;
+        await loadMessages();
+      } catch (error) {
+        console.warn('MessageX could not refresh missed messages after reconnecting:', error);
+      }
+    }, 250);
+  }
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && typeof activeChat !== 'undefined' && activeChat && typeof setChatComposerReadonly === 'function') {
-      setChatComposerReadonly(activeChat);
+    if (!document.hidden) {
+      if (typeof activeChat !== 'undefined' && activeChat && typeof setChatComposerReadonly === 'function') {
+        setChatComposerReadonly(activeChat);
+      }
+      refreshDurableMessagesAfterResume();
     }
   });
+  window.addEventListener('online', refreshDurableMessagesAfterResume);
 })();
 </script>
 </body>
