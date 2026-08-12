@@ -1,14 +1,14 @@
 {
-  "version": "freeperiod-published-art-and-title-cards-2026-08-09",
-  "policy": "Never use screenshots captured from a running game. Prefer published GitHub logo/thumbnail art and use a deterministic FreePeriod title card when no source artwork is available.",
+  "version": "freeperiod-300-repository-covers-2026-08-12",
+  "policy": "Every FreePeriod game uses a real image file sourced from a public game repository and committed under freeperiod-covers. No generated title cards or runtime screenshots are used.",
   "game_source": "https://github.com/CoolDude2349/Offline-HTML-Games-Pack",
   "original_canvas_archive": {
     "url": "https://canvas.instructure.com/files/325055662/download",
     "status": "unavailable-after-free-for-teacher-discontinuation"
   },
   "games_total": 300,
-  "published_art": 170,
-  "title_cards": 130,
+  "published_art": 300,
+  "title_cards": 0,
   "games": {
     "1.12.html": {
       "type": "published-project-art",
@@ -26,9 +26,9 @@
       "source": "https://raw.githubusercontent.com/unblokedgames/unblokedgames.github.io/main/projects/minecraft/thumb.png"
     },
     "10minutestilldawn.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/10minutestilldawn.jpg",
+      "source": "https://raw.githubusercontent.com/a456pur/seraph/main/images/thumbnails/10minutestilldawn.jpg"
     },
     "12minibattles.html": {
       "type": "published-thumbnail",
@@ -36,14 +36,14 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/12-minibattles.webp"
     },
     "1on1soccer.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/1on1soccer.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/cl1on1soccer.png"
     },
     "1on1tennis.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/1on1tennis.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/cl1v1tennis.png"
     },
     "1v1.lol.html": {
       "type": "published-thumbnail",
@@ -56,34 +56,34 @@
       "source": "https://raw.githubusercontent.com/unblokedgames/unblokedgames.github.io/main/projects/2048/thumb.png"
     },
     "2048cupcakes.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/2048cupcakes.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/cl2048cupcakes.png"
     },
     "3Dflightsimulator.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/3dflightsimulator.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clrealflightsim.png"
     },
     "8ballclassic.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/8ballclassic.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/cl8ballpool.png"
     },
     "agariolite.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/agariolite.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clagariolite.png"
     },
     "ageofwar.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/ageofwar.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clageofwar.png"
     },
     "ageofwar2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/ageofwar2.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clageofwar2.png"
     },
     "agesofconflict.html": {
       "type": "published-project-art",
@@ -101,19 +101,19 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/among-us.webp"
     },
     "angrybirds.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/angrybirds.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clangrybirds.png"
     },
     "angrybirdsshowdown.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/angrybirdsshowdown.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clangrybirdsshowdown.png"
     },
     "angrybirdsspace.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/angrybirdsspace.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clangry-birdsspace.png"
     },
     "awesometanks.html": {
       "type": "published-thumbnail",
@@ -126,9 +126,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/awesome-tanks-2.webp"
     },
     "backrooms.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/backrooms.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clbackrooms.png"
     },
     "baconmaydie.html": {
       "type": "published-thumbnail",
@@ -151,14 +151,14 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/bad-ice-cream-3.webp"
     },
     "badparenting.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/badparenting.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clbadparenting.png"
     },
     "badpiggies.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/badpiggies.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clbadpiggies.png"
     },
     "baldisbasics.html": {
       "type": "published-project-art",
@@ -166,9 +166,9 @@
       "source": "https://raw.githubusercontent.com/unblokedgames/unblokedgames.github.io/main/projects/baldis-basics/baldis-basics.png"
     },
     "baseballbros.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/baseballbros.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clbaseballbros.png"
     },
     "basketballlegends.html": {
       "type": "published-thumbnail",
@@ -181,9 +181,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/basketball-stars.webp"
     },
     "basketbros.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/basketbros.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clbasketbros.png"
     },
     "basketrandom.html": {
       "type": "published-thumbnail",
@@ -201,9 +201,9 @@
       "source": "https://raw.githubusercontent.com/unblokedgames/unblokedgames.github.io/main/projects/bitlife/logo.png"
     },
     "bitplanes.htm": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/bitplanes.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clbitplanes.png"
     },
     "blockysnakes.html": {
       "type": "published-thumbnail",
@@ -241,9 +241,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/bloxorz.webp"
     },
     "blumgiracers.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/blumgiracers.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clblumgiracers.png"
     },
     "blumgirocket.html": {
       "type": "published-thumbnail",
@@ -266,14 +266,14 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/bob-the-robber-5-temple-adventure.webp"
     },
     "bouncymotors.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/bouncymotors.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clbouncymotors.png"
     },
     "bowmasters.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/bowmasters.png",
+      "source": "https://raw.githubusercontent.com/Darkdragonzxs/ZXS-games/main/assets/images/games/Bowmasters.png"
     },
     "boxingrandom.htm": {
       "type": "published-thumbnail",
@@ -291,9 +291,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/bubble-shooter.webp"
     },
     "candycrush.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/candycrush.png",
+      "source": "https://raw.githubusercontent.com/MSTC-DA-IICT/Hacktoberfest24-candy-crush_HTML_CSS_JS/main/Images/CandyCrush.png"
     },
     "capybaraclicker.html": {
       "type": "published-thumbnail",
@@ -306,9 +306,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/car-drawing-game.webp"
     },
     "carkingarena.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/carkingarena.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clcarkingarena.png"
     },
     "chess.html": {
       "type": "published-thumbnail",
@@ -316,29 +316,29 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/master-chess.webp"
     },
     "choppyorc.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/choppyorc.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clchoppyorc.png"
     },
     "circloO.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/circloo.png",
+      "source": "https://raw.githubusercontent.com/selenite-cc/selenite-old/main/circloo/icon.png"
     },
     "circloO2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/circloo2.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clCircloO2.png"
     },
     "clashofvikings.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/clashofvikings.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clclashofvikings.png"
     },
     "cleanupio.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/cleanupio.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clcleanupio.png"
     },
     "clusterrush.html": {
       "type": "published-thumbnail",
@@ -361,14 +361,14 @@
       "source": "https://raw.githubusercontent.com/unblokedgames/unblokedgames.github.io/main/projects/crazy-cattle-3d/CrazyCattle3D.png"
     },
     "crazycrashlanding.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/crazycrashlanding.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clcarcrash3.png"
     },
     "crazymotorcycle.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/crazymotorcycle.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clcrazymotorcycle.png"
     },
     "crossyroad.htm": {
       "type": "published-thumbnail",
@@ -376,24 +376,24 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/crossy-road.webp"
     },
     "cuttherope.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/cuttherope.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clcuttherope.png"
     },
     "dadish.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/dadish.jpg",
+      "source": "https://raw.githubusercontent.com/a456pur/seraph/main/images/thumbnails/dadish.jpg"
     },
     "dadish2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/dadish2.jpg",
+      "source": "https://raw.githubusercontent.com/a456pur/seraph/main/images/thumbnails/dadish2.jpg"
     },
     "dadish3.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/dadish3.jpg",
+      "source": "https://raw.githubusercontent.com/a456pur/seraph/main/images/thumbnails/dadish3.jpg"
     },
     "deathchase.html": {
       "type": "published-thumbnail",
@@ -416,9 +416,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/doodle-jump.webp"
     },
     "drawclimber.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/drawclimber.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/cldrawclimber.png"
     },
     "dreadheadparkour.htm": {
       "type": "published-thumbnail",
@@ -441,14 +441,14 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/ducklife-4.webp"
     },
     "ducklife2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/ducklife2.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clducklife2.png"
     },
     "ducklife3.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/ducklife3.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clducklife3.png"
     },
     "ducklife4.html": {
       "type": "published-thumbnail",
@@ -456,14 +456,14 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/ducklife-4.webp"
     },
     "ducklife5.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/ducklife5.jpg",
+      "source": "https://raw.githubusercontent.com/a456pur/seraph/main/images/thumbnails/ducklife5.jpg"
     },
     "ducklingsio.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/ducklingsio.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clducklingsio.png"
     },
     "eagleride.html": {
       "type": "published-thumbnail",
@@ -486,19 +486,19 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/eggy-car.webp"
     },
     "elasticface.htm": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/elasticface.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clelasticface.png"
     },
     "escaperoad.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/escaperoad.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clescaperoad.png"
     },
     "escaperoad2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/escaperoad2.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clescaperoad-2.png"
     },
     "escapingtheprison.html": {
       "type": "published-thumbnail",
@@ -506,19 +506,19 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/escaping-the-prison.webp"
     },
     "evilglitch.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/evilglitch.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clevilglitch.png"
     },
     "fancypantsadventure.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/fancypantsadventure.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clfancypantsadventure.png"
     },
     "fancypantsadventure2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/fancypantsadventure2.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clfancypantsadventure2.png"
     },
     "fireboyandwatergirl.html": {
       "type": "published-thumbnail",
@@ -546,19 +546,19 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/flappybird.webp"
     },
     "floodrunner2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/floodrunner2.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clfloodrunner2.png"
     },
     "floodrunner3.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/floodrunner3.jpg",
+      "source": "https://raw.githubusercontent.com/a456pur/seraph/main/images/thumbnails/floodrunner3.jpg"
     },
     "floodrunner4.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/floodrunner4.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clfloodrunner4.png"
     },
     "fnaf.html": {
       "type": "published-thumbnail",
@@ -581,9 +581,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/fnaf4.webp"
     },
     "footballbros.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/footballbros.png",
+      "source": "https://raw.githubusercontent.com/bubbls/UGS-Assets/main/football%20bros/icon.png"
     },
     "footballlegends.html": {
       "type": "published-thumbnail",
@@ -591,9 +591,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/football-legends.webp"
     },
     "freerider3.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/freerider3.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clfreerider3.png"
     },
     "fruitninja.html": {
       "type": "published-project-art",
@@ -606,9 +606,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/funny-battle-simulator.webp"
     },
     "funnybattle2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/funnybattle2.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clfunnybattle2.png"
     },
     "funnymadracing.html": {
       "type": "published-thumbnail",
@@ -631,9 +631,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/geometry-dash.webp"
     },
     "geometryvibes.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/geometryvibes.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clgeometrydashlite.png"
     },
     "getawayshootout.htm": {
       "type": "published-thumbnail",
@@ -651,34 +651,34 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/gladihoppers.webp"
     },
     "googlebaseball.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/googlebaseball.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clgooglebaseball.png"
     },
     "googledino.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/googledino.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clgoogledino.png"
     },
     "granny.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/granny.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clgranny.png"
     },
     "granny2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/granny2.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clgranny2.png"
     },
     "guesstheiranswer.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/guesstheiranswer.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clguesstheiranswer.png"
     },
     "hanger2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/hanger2.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clhanger2.png"
     },
     "happywheels.html": {
       "type": "published-thumbnail",
@@ -691,9 +691,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/gamefinaltwo/helix-jump/logo.png"
     },
     "highwaytraffic.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/highwaytraffic.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clhighwaytraffic3d.png"
     },
     "hillclimbracinglite.html": {
       "type": "published-thumbnail",
@@ -746,34 +746,34 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/jumping-shell.webp"
     },
     "karatebros.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/karatebros.png",
+      "source": "https://raw.githubusercontent.com/bubbls/UGS-Assets/main/karate%20bros/icon.png"
     },
     "kartbros.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/kartbros.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clkartbros.png"
     },
     "learntofly.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/learntofly.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/cllearntofly.png"
     },
     "learntofly2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/learntofly2.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/cllearntofly2.png"
     },
     "learntofly3.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/learntofly3.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/cllearntofly3.png"
     },
     "learntoflyidle.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/learntoflyidle.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/cllearntoflyidle.png"
     },
     "leveldevil.html": {
       "type": "published-thumbnail",
@@ -786,9 +786,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/madalin-stunt-cars-2.webp"
     },
     "melonplayground.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/melonplayground.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clmelonplayground.png"
     },
     "mergeroundracers.html": {
       "type": "published-thumbnail",
@@ -846,9 +846,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/gamefinalthree/noob-miner/logo.png"
     },
     "oppositeday.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/oppositeday.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/cloppositeday.png"
     },
     "ovo.html": {
       "type": "published-thumbnail",
@@ -861,9 +861,9 @@
       "source": "https://raw.githubusercontent.com/unblokedgames/unblokedgames.github.io/main/projects/ovo-2/icons/icon-256.png"
     },
     "ovo3dimensions.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/ovo3dimensions.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clovodimensions.png"
     },
     "pacman.html": {
       "type": "published-project-art",
@@ -871,9 +871,9 @@
       "source": "https://raw.githubusercontent.com/unblokedgames/unblokedgames.github.io/main/projects/pacman/thumbnail.png"
     },
     "papasbakeria.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/papasbakeria.jpg",
+      "source": "https://raw.githubusercontent.com/a456pur/seraph/main/images/thumbnails/papasbakeria.jpg"
     },
     "papasburgeria.html": {
       "type": "published-thumbnail",
@@ -881,19 +881,19 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/papas-burgeria.webp"
     },
     "papascheeseria.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/papascheeseria.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clpapascheeseria.png"
     },
     "papascupcakeria.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/papascupcakeria.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clpapascupcakeria.png"
     },
     "papasdonuteria.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/papasdonuteria.jpg",
+      "source": "https://raw.githubusercontent.com/a456pur/seraph/main/images/thumbnails/papasdonuteria.jpg"
     },
     "papasfreezeria.html": {
       "type": "published-project-art",
@@ -911,9 +911,9 @@
       "source": "https://raw.githubusercontent.com/unblokedgames/unblokedgames.github.io/main/flash/papas-pancakeria/thumb.png"
     },
     "papaspastaria.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/papaspastaria.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clpapaspastaria.png"
     },
     "papaspizzeria.html": {
       "type": "published-project-art",
@@ -921,19 +921,19 @@
       "source": "https://raw.githubusercontent.com/unblokedgames/unblokedgames.github.io/main/flash/papas-pizzeria/thumb.png"
     },
     "papasscooperia.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/papasscooperia.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clpapasscooperia.png"
     },
     "papassushiria.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/papassushiria.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clpapassushiria.png"
     },
     "papastacomia.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/papastacomia.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clpapastacomia.png"
     },
     "papaswingeria.html": {
       "type": "published-thumbnail",
@@ -961,44 +961,44 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/parking-fury-3.webp"
     },
     "picosschool.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/picosschool.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clpicosschool.png"
     },
     "pingpongchaos.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/pingpongchaos.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clpingpongchaos.png"
     },
     "pixelspeedrun.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/pixelspeedrun.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clpixelspeedrun.png"
     },
     "plantsvszombies.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/plantsvszombies.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clplantsvszombies.png"
     },
     "plonky.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/plonky.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clplonky.png"
     },
     "polytrack.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/polytrack.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/assets/game-icons/polytrack.png"
     },
     "poorbunny.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/poorbunny.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clpoorbunny.png"
     },
     "pou.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/pou.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clpou.png"
     },
     "ragdollarchers.htm": {
       "type": "published-thumbnail",
@@ -1006,14 +1006,14 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/ragdoll-archers.webp"
     },
     "ragdollhit.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/ragdollhit.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clragdollhit.png"
     },
     "ragdollsoccer.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/ragdollsoccer.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clragdollsoccer.png"
     },
     "redball4vol1.html": {
       "type": "published-thumbnail",
@@ -1046,44 +1046,44 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/retro-highway.webp"
     },
     "retropingpong.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/retropingpong.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clretropingpong.png"
     },
     "riddleschool.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/riddleschool.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clriddleschool.png"
     },
     "riddleschool2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/riddleschool2.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clriddleschool2.png"
     },
     "riddleschool3.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/riddleschool3.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clriddleschool3.png"
     },
     "riddleschool4.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/riddleschool4.jpg",
+      "source": "https://raw.githubusercontent.com/a456pur/seraph/main/images/thumbnails/riddleschool4.jpg"
     },
     "riddleschool5.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/riddleschool5.jpg",
+      "source": "https://raw.githubusercontent.com/a456pur/seraph/main/images/thumbnails/riddleschool5.jpg"
     },
     "riddletransfer.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/riddletransfer.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clriddletransfer.png"
     },
     "riddletransfer2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/riddletransfer2.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clriddletransfer2.png"
     },
     "rocketsoccerderby.html": {
       "type": "published-thumbnail",
@@ -1101,14 +1101,14 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/rooftop-snipers-2.webp"
     },
     "run.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/run.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clrun.png"
     },
     "run2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/run2.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clrun-2.png"
     },
     "run3.html": {
       "type": "published-thumbnail",
@@ -1116,9 +1116,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/run-3.webp"
     },
     "sandgame.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/sandgame.png",
+      "source": "https://raw.githubusercontent.com/3kh0/3kh0-lite/main/projects/sand-game/sand-game.PNG"
     },
     "shortlife.html": {
       "type": "published-thumbnail",
@@ -1131,9 +1131,9 @@
       "source": "https://raw.githubusercontent.com/unblokedgames/unblokedgames.github.io/main/projects/slope/slope4.jpeg"
     },
     "slope2player.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/slope2player.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clslope2player.png"
     },
     "slope3.html": {
       "type": "published-thumbnail",
@@ -1146,19 +1146,19 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/gamefinalfour/slow-roads/static/media/splash-logo-placeholder-7b.2d60164d.png"
     },
     "sm63.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/sm63.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clsupermario63.png"
     },
     "sm64.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/sm64.jpg",
+      "source": "https://raw.githubusercontent.com/a456pur/seraph/main/images/thumbnails/sm64.jpg"
     },
     "snowballio.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/snowballio.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clsnowballio.png"
     },
     "snowrider.htm": {
       "type": "published-thumbnail",
@@ -1166,14 +1166,14 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/snow-rider-3d.webp"
     },
     "snowroad.htm": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/snowroad.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clsnowroad.png"
     },
     "soccerbros.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/soccerbros.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clsoccerbros.png"
     },
     "soccerrandom.htm": {
       "type": "published-thumbnail",
@@ -1181,9 +1181,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/soccer-random.webp"
     },
     "spacebarclicker.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/spacebarclicker.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clspacebarclicker.png"
     },
     "spaceiskey.html": {
       "type": "published-thumbnail",
@@ -1196,19 +1196,19 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/space-is-key-2.webp"
     },
     "spacewaves.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/spacewaves.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clspacewaves.png"
     },
     "speedstars.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/speedstars.png",
+      "source": "https://raw.githubusercontent.com/Darkdragonzxs/ZXS-games/main/assets/images/games/speedstars.png"
     },
     "sprunki.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/sprunki.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clsprunki.png"
     },
     "stack.html": {
       "type": "published-project-art",
@@ -1216,19 +1216,19 @@
       "source": "https://raw.githubusercontent.com/unblokedgames/unblokedgames.github.io/main/projects/stack/icon.png"
     },
     "stacktris.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/stacktris.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clstacktris.png"
     },
     "stateio.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/stateio.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clstateio.png"
     },
     "stickarchersbattle.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/stickarchersbattle.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clstickarchersbattle.png"
     },
     "stickfighter.html": {
       "type": "published-thumbnail",
@@ -1246,9 +1246,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/stickmerge.webp"
     },
     "subwaysurfersbeijing.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/subwaysurfersbeijing.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clsubwaysurfersbeijing.png"
     },
     "subwaysurfershavana.html": {
       "type": "published-thumbnail",
@@ -1281,9 +1281,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/super-star-car.webp"
     },
     "tabletennisworldtour.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/tabletennisworldtour.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/cltabletennisworldtour.png"
     },
     "tag.html": {
       "type": "published-thumbnail",
@@ -1291,9 +1291,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/tag.webp"
     },
     "taproad.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/taproad.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/cltaproad.png"
     },
     "templeofboom.html": {
       "type": "published-thumbnail",
@@ -1306,19 +1306,19 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/temple-run-2.webp"
     },
     "territorialio.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/territorialio.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clterritorialio.png"
     },
     "theimpossiblequiz.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/theimpossiblequiz.jpg",
+      "source": "https://raw.githubusercontent.com/a456pur/seraph/main/images/thumbnails/theimpossiblequiz.jpg"
     },
     "theimpossiblequiz2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/theimpossiblequiz2.jpg",
+      "source": "https://raw.githubusercontent.com/a456pur/seraph/main/images/thumbnails/theimpossiblequiz2.jpg"
     },
     "thereisnog.html": {
       "type": "published-thumbnail",
@@ -1326,19 +1326,19 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/there-is-no-game.webp"
     },
     "theyarecoming.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/theyarecoming.png",
+      "source": "https://raw.githubusercontent.com/bubbls/UGS-Assets/main/they-are-coming/logo.png"
     },
     "thisistheonlylevel.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/thisistheonlylevel.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clthisistheonlylevel.png"
     },
     "thisistheonlyleveltoo.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/thisistheonlyleveltoo.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clthisistheonlyleveltoo.png"
     },
     "timeshooter2.html": {
       "type": "published-thumbnail",
@@ -1361,19 +1361,19 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/tomb-of-the-mask.webp"
     },
     "trapthecat.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/trapthecat.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/cltrapthecat.png"
     },
     "triviacrack.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/triviacrack.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/cltriviacrack.png"
     },
     "tubejumpers.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/tubejumpers.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/cltubejumpers.png"
     },
     "tunnelrush.html": {
       "type": "published-thumbnail",
@@ -1411,14 +1411,14 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/vex-8.webp"
     },
     "vexx3m.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/vexx3m.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clvexx3m.png"
     },
     "vexx3m2.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/vexx3m2.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clvexx3m2.png"
     },
     "volleyrandom.html": {
       "type": "published-thumbnail",
@@ -1426,9 +1426,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/volley-random.webp"
     },
     "wartheknights.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/wartheknights.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clwartheknight.png"
     },
     "webecomewhatwebehold.html": {
       "type": "published-thumbnail",
@@ -1436,14 +1436,14 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/we-become-what-we-behold.webp"
     },
     "wheeliebike.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/wheeliebike.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clwheeliebike.png"
     },
     "wheely.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/wheely.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clwheely.png"
     },
     "wheely2.html": {
       "type": "published-thumbnail",
@@ -1481,9 +1481,9 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/wheely-8-1.webp"
     },
     "wordleunlimited.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/wordleunlimited.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clwordle.png"
     },
     "worldshardestgame.html": {
       "type": "published-thumbnail",
@@ -1501,14 +1501,14 @@
       "source": "https://raw.githubusercontent.com/retrobowlubg/retrobowlubg.github.io/main/img/jpg/worlds-hardest-game-3.webp"
     },
     "wrestlebros.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/wrestlebros.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clwrestlebros.png"
     },
     "zombierush.html": {
-      "type": "freeperiod-title-card",
-      "file": null,
-      "source": null
+      "type": "published-repository-art",
+      "file": "freeperiod-covers/zombierush.png",
+      "source": "https://raw.githubusercontent.com/FrenchHelp/Games/main/icons/clzombierush.png"
     }
   }
 }
