@@ -33,8 +33,14 @@ let ixlAnswerHelperAssetsPromise = null;
 
 const ASTEROID_LAUNCH = (() => {
   const params = new URLSearchParams(location.hash.replace(/^#/, ""));
+  let parentOrigin = "";
+  try {
+    const parsedParentOrigin = new URL(String(params.get("asteroid-parent-origin") || ""));
+    if (/^https?:$/.test(parsedParentOrigin.protocol)) parentOrigin = parsedParentOrigin.origin;
+  } catch {}
   const context = Object.freeze({
     token: String(params.get("asteroid-access") || "").slice(0, 160),
+    parentOrigin,
     appMode: params.get("asteroid-app") === "1",
     target: String(params.get("target") || "").slice(0, 2048),
     name: String(params.get("name") || "").slice(0, 120),
@@ -44,17 +50,53 @@ const ASTEROID_LAUNCH = (() => {
   if (location.hash) history.replaceState(null, "", `${location.pathname}${location.search}`);
   return context;
 })();
-const ASTEROID_LOCAL_STANDALONE = /^(?:localhost|127[.]0[.]0[.]1|\[::1\])$/i.test(location.hostname);
+const ASTEROID_LOCAL_STANDALONE = /^(?:localhost|127[.]0[.]0[.]1|\[::1\])$/i.test(location.hostname)
+  && (parent === window || !ASTEROID_LAUNCH.token);
 let pendingAsteroidTarget = ASTEROID_LAUNCH.target;
+let asteroidRemoteAccessDeadline = 0;
 
 function asteroidAccessAllowed() {
   if (ASTEROID_LOCAL_STANDALONE) return true;
   if (!ASTEROID_LAUNCH.token || parent === window) return false;
   try {
-    return parent.AsteroidBrowserAccessBridge?.validate?.(ASTEROID_LAUNCH.token) === true;
-  } catch {
-    return false;
-  }
+    if (parent.AsteroidBrowserAccessBridge?.validate?.(ASTEROID_LAUNCH.token) === true) return true;
+  } catch {}
+  return asteroidRemoteAccessDeadline > performance.now();
+}
+
+async function requestAsteroidAccess() {
+  if (asteroidAccessAllowed()) return true;
+  if (!ASTEROID_LAUNCH.token || !ASTEROID_LAUNCH.parentOrigin || parent === window) return false;
+  const requestId = globalThis.crypto?.randomUUID?.() || `asteroid-access-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  return new Promise((resolve) => {
+    let settled = false;
+    const finish = (allowed, remaining = 0) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      window.removeEventListener("message", onMessage);
+      const seconds = Math.max(0, Number(remaining) || 0);
+      asteroidRemoteAccessDeadline = allowed && seconds > 0 ? performance.now() + seconds * 1000 : 0;
+      resolve(asteroidRemoteAccessDeadline > performance.now());
+    };
+    const onMessage = (event) => {
+      if (event.source !== parent || event.origin !== ASTEROID_LAUNCH.parentOrigin) return;
+      const data = event.data && typeof event.data === "object" ? event.data : {};
+      if (data.type !== "asteroid-browser-access-result" || data.requestId !== requestId) return;
+      finish(data.allowed === true, data.remaining);
+    };
+    const timer = setTimeout(() => finish(false), 4000);
+    window.addEventListener("message", onMessage);
+    try {
+      parent.postMessage({
+        type: "asteroid-browser-access-check",
+        requestId,
+        token: ASTEROID_LAUNCH.token
+      }, ASTEROID_LAUNCH.parentOrigin);
+    } catch {
+      finish(false);
+    }
+  });
 }
 
 window.addEventListener("message", (event) => {
@@ -2179,6 +2221,7 @@ async function ensureScramjetRuntime() {
 function reloadForServiceWorkerControl() {
   const params = new URLSearchParams({ "asteroid-sw-ready": "1" });
   if (ASTEROID_LAUNCH.token) params.set("asteroid-access", ASTEROID_LAUNCH.token);
+  if (ASTEROID_LAUNCH.parentOrigin) params.set("asteroid-parent-origin", ASTEROID_LAUNCH.parentOrigin);
   if (ASTEROID_LAUNCH.appMode) params.set("asteroid-app", "1");
   if (ASTEROID_LAUNCH.target) params.set("target", ASTEROID_LAUNCH.target);
   if (ASTEROID_LAUNCH.name) params.set("name", ASTEROID_LAUNCH.name);
@@ -2357,7 +2400,10 @@ applySettingsToUI();
 restoreWallpaperAsset().catch((error) => log(`Wallpaper restore failed: ${textError(error)}`, "warn"));
 renderLanguages();
 setInterval(updateClock, 30_000);
-initialize().catch(fatal);
+requestAsteroidAccess().then((allowed) => {
+  if (!allowed) throw new Error("Open Asteroid Browser through Asteroid OS. A current Asteroid access pass is required.");
+  return initialize();
+}).catch(fatal);
 if (!ASTEROID_LOCAL_STANDALONE) {
   setInterval(() => {
     if (!asteroidAccessAllowed()) fatal(new Error("This Asteroid Browser access pass has expired. Reopen it from Asteroid OS."));
