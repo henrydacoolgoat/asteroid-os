@@ -28,11 +28,11 @@
 - Manager screenshot: `C:/Users/henry_x0k28gt/Documents/Codex/2026-08-12/referenced-chatgpt-conversation-this-is-an/outputs/asteroid-labs-manager.png` (1264 × 1140 full page).
 - Same-viewport comparison: `C:/Users/henry_x0k28gt/Documents/Codex/2026-08-12/referenced-chatgpt-conversation-this-is-an/outputs/asteroid-labs-reference-comparison.png`; supplied artwork and boot capture were placed side by side on matching 1280 × 720 charcoal canvases.
 - Visual comparison evidence: artwork, proportions, monochrome palette, LABS pill, ASTEROID wordmark, and centered square composition match because the implementation uses the original source asset directly. The takeover adds only short scan/glitch motion and a matching charcoal surround.
-- Public dashboard check: six Supabase projects rendered with balanced spacing, readable typography, responsive two-column cards, project counts, and read-only group filters.
-- Manager check: separate unlinked HTML rendered the publisher form and six protected Supabase records after the local key file was selected.
-- Interaction check: five rapid clicks on the regular boot logo changed `#bootScreen` to `labs-unlock`, showed the artwork, then navigated to `asteroid-labs.html`. Four category filters and the all-projects filter worked; Future reduced the visible cards from six to two.
-- Backend check: public read returned six records, incorrect manager key returned 401, direct anonymous insert returned 401, protected insert became publicly readable, and cleanup deletion was verified.
-- Console check: no errors or warnings on either the public Labs page or the separate manager page.
+- Public dashboard check: the responsive read-only roadmap handles an intentionally empty real-project library, includes a prominent return to Asteroid OS, and exposes an account-authenticated feature-request form.
+- Manager check: the separate unlinked HTML signs in with the existing `gymguy` Asteroid account, holds the session only in memory, and includes both the roadmap publisher and private feature-request inbox.
+- Interaction check: five rapid clicks on the regular boot logo changed `#bootScreen` to `labs-unlock`, showed the artwork, then navigated to `asteroid-labs.html`. The Labs page recognizes the same-tab Asteroid session, supports direct account sign-in, and returns to `index.html` without opening another tab.
+- Backend check: six demonstration records are removed; direct anonymous writes are denied; authenticated users can create and read only their own requests; only the stable `gymguy` Auth user ID can publish projects, review all requests, or delete them.
+- Security check: the old key file and custom-key publisher are retired. No service-role key is present in either HTML file; authorization is enforced by Supabase Auth plus row-level security.
 - Comparison history: first implementation used the exact supplied asset and passed the same-viewport comparison; no asset substitution or visual correction was needed.
 
 final result: passed
