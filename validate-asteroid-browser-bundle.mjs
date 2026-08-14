@@ -40,8 +40,14 @@ async function collectFiles(directory, prefix = '') {
   return files;
 }
 
-async function sha256(file) {
-  return createHash('sha256').update(await readFile(file)).digest('hex');
+const normalizedTextExtensions = new Set(['.html', '.js', '.mjs', '.md', '.txt']);
+
+async function sha256(file, relative = '') {
+  let contents = await readFile(file);
+  if (normalizedTextExtensions.has(path.extname(relative).toLowerCase())) {
+    contents = Buffer.from(contents.toString('utf8').replace(/\r\n?/g, '\n'), 'utf8');
+  }
+  return createHash('sha256').update(contents).digest('hex');
 }
 
 let actualFiles = [];
@@ -73,7 +79,7 @@ for (const [relative, expected] of checksumEntries) {
     checksumFailures.push(`${relative}: missing`);
     continue;
   }
-  const actual = await sha256(path.join(browserDirectory, ...relative.split('/')));
+  const actual = await sha256(path.join(browserDirectory, ...relative.split('/')), relative);
   if (actual !== expected) checksumFailures.push(`${relative}: checksum mismatch`);
 }
 

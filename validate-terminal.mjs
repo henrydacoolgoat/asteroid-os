@@ -27,9 +27,11 @@ const checks = [
   ['file commands use the shared Files persistence path', terminal.includes('await filesSaveItem') && terminal.includes('filesMoveToRecycleBin') && terminal.includes('filesRestoreItem')],
   ['app commands use the real window manager', terminal.includes('openApp(app.id)') && terminal.includes('closeWindow(win)')],
   ['settings commands call the real OS setters', terminal.includes('applyTheme(mode)') && terminal.includes('setAccent(color)') && terminal.includes('setWallpaper(index)')],
-  ['thousands count is based on real parameterized forms', terminal.includes('const arithmeticForms=64*64') && terminal.includes('appForms') && terminal.includes('fileForms')],
+  ['command count reports only registry commands and aliases', terminal.includes('const canonical=terminalCanonicalCommands.size') && terminal.includes('const aliases=Math.max(0,registeredNames-canonical)') && !terminal.includes('arithmeticForms')],
+  ['account commands refresh backend state before reporting it', terminal.includes('terminalWaitForAccountRefresh') && terminal.includes('const wallet=await refreshShardWallet()') && terminal.includes('await refreshAsteroidBrowserAccess') && terminal.includes("asteroid_one_files?select=kind,mime_type,deleted_at")],
+  ['version command derives its value from the release build', terminal.includes('ASTEROID_RELEASE_BUILD.match') && terminal.includes('Build: ${ASTEROID_RELEASE_BUILD}')],
   ['deterministic browser test interface is exported', client.includes('window.AsteroidTerminal=Object.freeze') && client.includes("version:'2.0'")],
-  ['Terminal App Store description matches the implementation', client.includes("'97 canonical working commands'") && client.includes("'Pipes, redirects, aliases, and completion'")]
+  ['Terminal App Store description matches the implementation', client.includes("'97 canonical commands'") && client.includes("'Aliases reported separately'") && client.includes("'Pipes, redirects, aliases, and completion'")]
 ];
 
 let failed = 0;
