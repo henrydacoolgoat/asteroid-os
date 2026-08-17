@@ -29,6 +29,7 @@ const checks = [
   ,['background pause preserves the desired wake state', voice.includes("const stopWakeListener=(status='paused',{disable=false}={})=>")]
   ,['normal desktop gestures never request microphone access', !voice.includes('armWakePermissionGesture') && !voice.includes("document.addEventListener('pointerdown',wakeGestureHandler,true)")]
   ,['ungranted wake voice is silently optional', optionalWake.includes("if(microphonePermission!=='granted')") && optionalWake.includes("publishWakeStatus('off')") && !client.includes('data-comet-wake-status data-state=')]
+  ,['wake status state cannot erase the OS body', voice.includes('document.body.dataset.cometWakeState=status;') && voice.includes("document.querySelectorAll('[data-comet-wake-status]')") && !voice.includes('document.body.dataset.cometWakeStatus=status;')]
   ,['permission changes restart wake voice without a reload', voice.includes("permission.state==='granted'") && voice.includes('startWakeListener();')]
 ];
 
