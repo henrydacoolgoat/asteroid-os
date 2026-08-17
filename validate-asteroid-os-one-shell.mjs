@@ -17,8 +17,9 @@ const pngWidth = iconBytes.readUInt32BE(16);
 const pngHeight = iconBytes.readUInt32BE(20);
 
 const checks = [
-  ['visible brand is Asteroid OS One', page.includes('<meta name="application-name" content="Asteroid OS One"') && page.includes('<title>Asteroid OS One v0.99.23.6')],
-  ['release metadata uses one consistent build id', page.includes('<meta name="asteroid-build" content="asteroid-os-one-v0.99.23.6-2026-08-17"') && page.includes("const ASTEROID_RELEASE_BUILD='asteroid-os-one-v0.99.23.6-2026-08-17';")],
+  ['visible brand is Asteroid OS One', page.includes('<meta name="application-name" content="Asteroid OS One"') && page.includes('<title>Asteroid OS One v0.99.23.7')],
+  ['release metadata uses one consistent build id', page.includes('<meta name="asteroid-build" content="asteroid-os-one-v0.99.23.7-2026-08-17"') && page.includes("const ASTEROID_RELEASE_BUILD='asteroid-os-one-v0.99.23.7-2026-08-17';")],
+  ['top-level document replacement guard loads before embedded apps', page.indexOf('__asteroidTopDocumentGuardInstalled') > page.indexOf('<script id="asteroidBootGuard">') && page.indexOf('__asteroidTopDocumentGuardInstalled') < page.indexOf('id="messageXEmbeddedSource"') && page.includes("document.open=(...args)=>{blocked('open',args[0]);return document}") && page.includes("document.write=(...args)=>{blocked('write',args[0])}")],
   ['legacy OPFS name is retained for existing user files', page.includes("getDirectoryHandle('Asteroid OS',{create:true})")],
   ['new shell override is present', page.includes('<style id="asteroid-os-one-shell-style">')],
   ['system shelf is fixed to the bottom', /#menuBar\{[\s\S]*?position:fixed!important;[\s\S]*?top:auto!important;[\s\S]*?bottom:0!important;/.test(page)],

@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.dirname(fileURLToPath(import.meta.url));
 const gateway = 'https://messagex-media.asteroid-messagex.workers.dev';
 const build = 'messagex-v0994-supabase-offline-media-queue-2026-08-12';
-const asteroidBuild = 'asteroid-os-one-v0.99.23.6-2026-08-17';
+const asteroidBuild = 'asteroid-os-one-v0.99.23.7-2026-08-17';
 const normalizeLineEndings = value => value.replace(/\r\n/g, '\n');
 const canonical = normalizeLineEndings(await readFile(path.join(root, 'messagex-v0.99.4.html'), 'utf8'));
 const loader = normalizeLineEndings(await readFile(path.join(root, 'MessageX_Latest_Loader_APP_VERSION_SIGNIN_FIXED.html'), 'utf8'));

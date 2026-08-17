@@ -1,4 +1,4 @@
-# Asteroid OS One v0.99.23.6 — Asteroid ONE GitHub Pages release
+# Asteroid OS One v0.99.23.7 — Asteroid ONE GitHub Pages release
 
 This build preserves the v0.99.23.4 performance and direct-username changes and
 includes laptop-backed MessageX media storage, FreePeriod, MessageX, and the
