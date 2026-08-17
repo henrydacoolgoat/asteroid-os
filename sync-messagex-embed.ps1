@@ -12,14 +12,19 @@ $messageX = [System.IO.File]::ReadAllText($messageXPath, $utf8)
 $index = [System.IO.File]::ReadAllText($indexPath, $utf8)
 $startMarker = '<script id="messageXEmbeddedSource" type="text/plain">'
 $startIndex = $index.IndexOf($startMarker, [System.StringComparison]::Ordinal)
-if ($startIndex -lt 0) { throw 'The embedded MessageX start marker was not found.' }
+if ($startIndex -lt 0) { throw 'The external MessageX marker was not found.' }
 $contentStart = $startIndex + $startMarker.Length
 
 $boundary = $index.IndexOf("</html>`n</script>", $contentStart, [System.StringComparison]::OrdinalIgnoreCase)
-if ($boundary -lt 0) { throw 'The embedded MessageX end marker was not found.' }
-
-$embeddedMessageX = $messageX.Replace('</script>', '<\/script>').TrimEnd("`r", "`n")
-$index = $index.Substring(0, $contentStart) + $embeddedMessageX + $index.Substring($boundary + 7)
+if ($boundary -ge 0) {
+  # Migrate old single-file builds by removing the nested HTML document. Pages
+  # now loads the canonical same-origin MessageX file in its own iframe.
+  $index = $index.Substring(0, $contentStart) + 'messagex-v0.99.4.html' + $index.Substring($boundary + 7)
+} else {
+  $markerEnd = $index.IndexOf('</script>', $contentStart, [System.StringComparison]::OrdinalIgnoreCase)
+  if ($markerEnd -lt 0) { throw 'The external MessageX marker end was not found.' }
+  $index = $index.Substring(0, $contentStart) + 'messagex-v0.99.4.html' + $index.Substring($markerEnd)
+}
 
 $previousBuilds = @(
   "const MESSAGE_X_BUNDLED_BUILD='messagex-v0994-laptop-storage-asteroid-bundled-2026-08-05';",
@@ -42,4 +47,4 @@ if (-not $index.Contains($newBuild)) {
 
 [System.IO.File]::WriteAllText($indexPath, $index, $utf8)
 
-Write-Output 'Synchronized the standalone, loader, and embedded MessageX builds.'
+Write-Output 'Synchronized the standalone and loader MessageX builds and externalized the OS client.'

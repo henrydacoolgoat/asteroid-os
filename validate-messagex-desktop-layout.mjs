@@ -11,7 +11,7 @@ const styleId = 'messagex-desktop-column-integrity-20260809';
 const checks = [
   ['standalone MessageX contains the desktop column repair', standalone.includes(styleId)],
   ['MessageX loader contains the desktop column repair', loader.includes(styleId)],
-  ['Asteroid OS embedded MessageX contains the desktop column repair', asteroid.includes(styleId)],
+  ['Asteroid OS loads the validated external MessageX client', asteroid.includes("const MESSAGE_X_BUNDLED_FILE='messagex-v0.99.4.html';") && asteroid.includes('frame.src=new URL(MESSAGE_X_BUNDLED_FILE,document.baseURI).href;')],
   ['desktop device grid clamps the conversation list width', /grid-template-columns:\s*clamp\(300px,\s*29vw,\s*420px\)\s+minmax\(0,\s*1fr\)\s*!important/.test(standalone)],
   ['desktop list screen is pinned to the first grid column', /#list-screen\s*\{[\s\S]{0,180}grid-column:\s*1\s*!important/.test(standalone)],
   ['desktop chat screen is pinned to the second grid column', /#chat-screen\s*\{[\s\S]{0,180}grid-column:\s*2\s*!important/.test(standalone)],

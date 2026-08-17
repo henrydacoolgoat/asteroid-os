@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.dirname(fileURLToPath(import.meta.url));
 const gateway = 'https://messagex-media.asteroid-messagex.workers.dev';
 const build = 'messagex-v0994-supabase-offline-media-queue-2026-08-12';
-const asteroidBuild = 'asteroid-os-one-v0.99.23.11-2026-08-17';
+const asteroidBuild = 'asteroid-os-one-v0.99.23.12-2026-08-17';
 const normalizeLineEndings = value => value.replace(/\r\n/g, '\n');
 const canonical = normalizeLineEndings(await readFile(path.join(root, 'messagex-v0.99.4.html'), 'utf8'));
 const loader = normalizeLineEndings(await readFile(path.join(root, 'MessageX_Latest_Loader_APP_VERSION_SIGNIN_FIXED.html'), 'utf8'));
@@ -17,9 +17,9 @@ const profileQueueMigration = normalizeLineEndings(await readFile(path.join(root
 
 const startMarker = '<script id="messageXEmbeddedSource" type="text/plain">';
 const contentStart = asteroid.indexOf(startMarker) + startMarker.length;
-const boundary = asteroid.toLowerCase().indexOf('</html>\n</script>', contentStart);
-const embedded = contentStart >= startMarker.length && boundary >= 0
-  ? asteroid.slice(contentStart, boundary + 7).replaceAll('<\\/script>', '</script>')
+const boundary = asteroid.toLowerCase().indexOf('</script>', contentStart);
+const externalSource = contentStart >= startMarker.length && boundary >= 0
+  ? asteroid.slice(contentStart, boundary).trim()
   : '';
 
 const retryFunctionStart = canonical.indexOf('async function fetchMessageXMediaStorage');
@@ -73,7 +73,7 @@ const normalizedNetworkFailure = await runRetryScenario({ failEveryLookup: true 
 
 const checks = [
   ['standalone and remembered loader are byte-identical', canonical === loader],
-  ['embedded MessageX equals the canonical standalone client', embedded === canonical.trimEnd()],
+  ['Asteroid OS references the canonical standalone client', externalSource === 'messagex-v0.99.4.html'],
   ['permanent Cloudflare gateway is compiled into MessageX', canonical.includes(`const MESSAGE_X_MEDIA_GATEWAY_ORIGIN = '${gateway}';`)],
   ['Asteroid OS contains the permanent gateway', asteroid.includes(gateway)],
   ['all bundled copies carry the permanent-gateway build marker', canonical.includes(build) && loader.includes(build) && asteroid.includes(build)],
@@ -110,13 +110,13 @@ const checks = [
   ['missed durable messages reload after app resume and network reconnect', canonical.includes('function refreshDurableMessagesAfterResume()') && canonical.includes("window.addEventListener('online', refreshDurableMessagesAfterResume)") && canonical.includes('await loadMessages();')],
   ['each account login reloads its durable chat list', canonical.includes('function enterApp()') && canonical.includes('loadChats();')],
   ['message rows preserve and display their original send timestamp', sendFunction.includes('const sentAt = new Date().toISOString()') && sendFunction.includes('created_at: sentAt') && sendFunction.includes('sentAt,') && canonical.includes('${formatTime(m.created_at)}')],
-  ['the full OS reads MessageX only from its embedded source', asteroid.includes("const source=document.getElementById(MESSAGE_X_DIRECT_EMBED_ID);") && !asteroid.includes('fetch(MESSAGE_X_BUNDLED_FILE')],
+  ['the full OS loads MessageX only from its same-origin repository file', asteroid.includes("const MESSAGE_X_BUNDLED_FILE='messagex-v0.99.4.html';") && asteroid.includes('frame.src=new URL(MESSAGE_X_BUNDLED_FILE,document.baseURI).href;') && !asteroid.includes('frame.srcdoc=html;') && !asteroid.includes('getMessageXHTML()')],
   ['MessageX updates never replace the active OS document', !canonical.includes('document.open()') && !canonical.includes('document.write(html)') && canonical.includes('MessageX update saved. Reload after Asteroid OS One is published.')],
-  ['the full OS mounts the validated embedded client with srcdoc', asteroid.includes('frame.srcdoc=html;') && asteroid.includes("meta[name=\"messagex-build\"]") && asteroid.includes('===MESSAGE_X_BUNDLED_BUILD')],
-  ['the Asteroid desktop MessageX app mounts the shared embedded frame', asteroid.includes('async function mountMessageXFrame(root)') && asteroid.includes('const frame=await prepareMessageXInBackground();')],
-  ['Contacts opens the shared embedded MessageX client', asteroid.includes("function openMessageXUsername(username)") && asteroid.includes("openApp('messages');\n    sendMessageXCommand({type:'asteroid-open-messagex-chat',username:clean});")],
-  ['notification clicks open the shared embedded MessageX client', asteroid.includes("openApp('messages');\n    sendMessageXCommand({\n      type:'asteroid-open-messagex-chat',\n      chatId:note.chatId")],
-  ['Comet sends through the shared embedded MessageX client', asteroid.includes('async function sendCometMessageXMessage({username,text})') && asteroid.includes('const frame=await prepareMessageXInBackground(),requestId=')],
+  ['the full OS validates the loaded same-origin MessageX build', asteroid.includes("meta[name=\"messagex-build\"]") && asteroid.includes('===MESSAGE_X_BUNDLED_BUILD')],
+  ['the Asteroid desktop MessageX app mounts the shared repository frame', asteroid.includes('async function mountMessageXFrame(root)') && asteroid.includes('const frame=await prepareMessageXInBackground();')],
+  ['Contacts opens the shared repository MessageX client', asteroid.includes("function openMessageXUsername(username)") && asteroid.includes("openApp('messages');\n    sendMessageXCommand({type:'asteroid-open-messagex-chat',username:clean});")],
+  ['notification clicks open the shared repository MessageX client', asteroid.includes("openApp('messages');\n    sendMessageXCommand({\n      type:'asteroid-open-messagex-chat',\n      chatId:note.chatId")],
+  ['Comet sends through the shared repository MessageX client', asteroid.includes('async function sendCometMessageXMessage({username,text})') && asteroid.includes('const frame=await prepareMessageXInBackground(),requestId=')],
   ['no Quick Tunnel hostname is bundled', !canonical.includes('trycloudflare.com')],
   ['no laptop loopback address is bundled', !canonical.includes('127.0.0.1:8787') && !canonical.includes('localhost:8787')],
   ['no Supabase secret or service-role key is bundled', !canonical.includes('sb_secret_') && !canonical.includes('service_role')],

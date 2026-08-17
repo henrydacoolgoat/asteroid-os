@@ -17,8 +17,8 @@ const pngWidth = iconBytes.readUInt32BE(16);
 const pngHeight = iconBytes.readUInt32BE(20);
 
 const checks = [
-  ['visible brand is Asteroid OS One', page.includes('<meta name="application-name" content="Asteroid OS One"') && page.includes('<title>Asteroid OS One v0.99.23.11')],
-  ['release metadata uses one consistent build id', page.includes('<meta name="asteroid-build" content="asteroid-os-one-v0.99.23.11-2026-08-17"') && page.includes("const ASTEROID_RELEASE_BUILD='asteroid-os-one-v0.99.23.11-2026-08-17';")],
+  ['visible brand is Asteroid OS One', page.includes('<meta name="application-name" content="Asteroid OS One"') && page.includes('<title>Asteroid OS One v0.99.23.12')],
+  ['release metadata uses one consistent build id', page.includes('<meta name="asteroid-build" content="asteroid-os-one-v0.99.23.12-2026-08-17"') && page.includes("const ASTEROID_RELEASE_BUILD='asteroid-os-one-v0.99.23.12-2026-08-17';")],
   ['top-level document replacement guard loads before application markup', page.indexOf('__asteroidTopDocumentGuardInstalled') > page.indexOf('<script id="asteroid-top-level-guard">') && page.indexOf('__asteroidTopDocumentGuardInstalled') < page.indexOf('id="asteroidAuthGate"') && page.indexOf('__asteroidTopDocumentGuardInstalled') < page.indexOf('id="messageXEmbeddedSource"') && page.includes("const asteroidShellDocument=document.querySelector('meta[name=\"asteroid-build\"]')?.content?.startsWith('asteroid-os-one-')===true;") && page.includes("if(asteroidShellDocument&&!window.__asteroidTopDocumentGuardInstalled)") && page.includes("documentPrototype.open=function(...args){blocked('open',args[0]);return document}") && page.includes("documentPrototype.write=function(...args){blocked('write',args[0])}")],
   ['legacy OPFS name is retained for existing user files', page.includes("getDirectoryHandle('Asteroid OS',{create:true})")],
   ['new shell override is present', page.includes('<style id="asteroid-os-one-shell-style">')],
