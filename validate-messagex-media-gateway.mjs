@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.dirname(fileURLToPath(import.meta.url));
 const gateway = 'https://messagex-media.asteroid-messagex.workers.dev';
 const build = 'messagex-v0994-supabase-offline-media-queue-2026-08-12';
-const asteroidBuild = 'asteroid-os-one-v0.99.23.10-2026-08-17';
+const asteroidBuild = 'asteroid-os-one-v0.99.23.11-2026-08-17';
 const normalizeLineEndings = value => value.replace(/\r\n/g, '\n');
 const canonical = normalizeLineEndings(await readFile(path.join(root, 'messagex-v0.99.4.html'), 'utf8'));
 const loader = normalizeLineEndings(await readFile(path.join(root, 'MessageX_Latest_Loader_APP_VERSION_SIGNIN_FIXED.html'), 'utf8'));
@@ -111,6 +111,7 @@ const checks = [
   ['each account login reloads its durable chat list', canonical.includes('function enterApp()') && canonical.includes('loadChats();')],
   ['message rows preserve and display their original send timestamp', sendFunction.includes('const sentAt = new Date().toISOString()') && sendFunction.includes('created_at: sentAt') && sendFunction.includes('sentAt,') && canonical.includes('${formatTime(m.created_at)}')],
   ['the full OS reads MessageX only from its embedded source', asteroid.includes("const source=document.getElementById(MESSAGE_X_DIRECT_EMBED_ID);") && !asteroid.includes('fetch(MESSAGE_X_BUNDLED_FILE')],
+  ['MessageX updates never replace the active OS document', !canonical.includes('document.open()') && !canonical.includes('document.write(html)') && canonical.includes('MessageX update saved. Reload after Asteroid OS One is published.')],
   ['the full OS mounts the validated embedded client with srcdoc', asteroid.includes('frame.srcdoc=html;') && asteroid.includes("meta[name=\"messagex-build\"]") && asteroid.includes('===MESSAGE_X_BUNDLED_BUILD')],
   ['the Asteroid desktop MessageX app mounts the shared embedded frame', asteroid.includes('async function mountMessageXFrame(root)') && asteroid.includes('const frame=await prepareMessageXInBackground();')],
   ['Contacts opens the shared embedded MessageX client', asteroid.includes("function openMessageXUsername(username)") && asteroid.includes("openApp('messages');\n    sendMessageXCommand({type:'asteroid-open-messagex-chat',username:clean});")],

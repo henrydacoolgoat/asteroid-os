@@ -12,7 +12,7 @@ const queueBase = await read('supabase', 'migrations', '20260812143000_add_messa
 const edge = await read('supabase', 'functions', 'asteroid-one', 'index.ts');
 
 const checks = [
-  ['release and feature build markers are present', client.includes('asteroid-os-one-v0.99.23.10-2026-08-17') && client.includes("const ASTEROID_ONE_BUILD='asteroid-one-files-account-state-2026-08-12';")],
+  ['release and feature build markers are present', client.includes('asteroid-os-one-v0.99.23.11-2026-08-17') && client.includes("const ASTEROID_ONE_BUILD='asteroid-one-files-account-state-2026-08-12';")],
   ['Files is presented as Asteroid ONE', client.includes('<span>Asteroid ONE</span>') && client.includes('Your laptop storage, available to this account on every device')],
   ['direct laptop uploads use multipart form data and account authorization', client.includes("form.append('file',blob") && client.includes("'/api/one/upload?'") && client.includes("Authorization:'Bearer '+session.access_token")],
   ['offline uploads use the private Supabase queue', client.includes("const ASTEROID_ONE_QUEUE_BUCKET='messagex-media-queue';") && client.includes('asteroidOneQueueFile(item,blob,session,sha256)')],

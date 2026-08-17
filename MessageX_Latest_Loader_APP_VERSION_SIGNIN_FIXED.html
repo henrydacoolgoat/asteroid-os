@@ -27958,37 +27958,17 @@ body.has-custom-wallpaper:is(
         .subscribe();
     }
     async function applyNewHtmlPayload(v) {
-      if (window.__ASTEROID_OS_BUNDLED_MESSAGEX__ || window.__ASTEROID_OS_DISABLE_SELF_UPDATE__ || window.parent !== window) return;
-      try {
-        const url = v.html_url + (v.html_url.includes('?') ? '&' : '?') + 't=' + Date.now();
-        const res = await fetch(url);
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const html = await res.text();
-        if (!html || html.length < 100) throw new Error('Empty response');
-        store.set('mx_show_update_popup_' + currentUser, {
-          version: v.version,
-          notes: v.notes || []
-        });
-        store.set('mx_last_seen_version_' + currentUser, v.version);
-        try {
-          setOnline(false);
-        } catch (err) {
-          }
-        [messageSubscription, chatSubscription, profileSubscription, typingChannel, versionSub].forEach(c => {
-          try {
-            if (c) supabase.removeChannel(c);
-          } catch (err) {
-          }
-        });
-        if (heartbeatTimer) clearInterval(heartbeatTimer);
-        if (lastSeenTimer) clearInterval(lastSeenTimer);
-        document.open();
-        document.write(html);
-        document.close();
-      } catch (e) {
-        console.error('Update failed:', e);
-        showToast('Update failed: ' + e.message, 4000);
-      }
+      if (!v) return;
+      // MessageX is shipped as part of the verified Asteroid OS Pages release.
+      // Replacing the active document here destroyed the parent OS when a host
+      // or WebView changed frame identity. Keep the active session intact and
+      // let the next published Asteroid OS release deliver the new client.
+      store.set('mx_show_update_popup_' + currentUser, {
+        version: v.version,
+        notes: v.notes || []
+      });
+      showUpdatePopup(v.version, v.notes || []);
+      showToast('MessageX update saved. Reload after Asteroid OS One is published.', 5000);
     }
     function showUpdateBanner() {
       const banner = document.getElementById('update-banner');
