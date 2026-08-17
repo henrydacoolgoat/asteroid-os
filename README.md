@@ -1,4 +1,4 @@
-# Asteroid OS v0.99.23.5 — Asteroid ONE GitHub Pages release
+# Asteroid OS One v0.99.23.6 — Asteroid ONE GitHub Pages release
 
 This build preserves the v0.99.23.4 performance and direct-username changes and
 includes laptop-backed MessageX media storage, FreePeriod, MessageX, and the
@@ -31,13 +31,13 @@ complete Asteroid Browser runtime.
 - `asteroid-browser/` contains the complete project-path-safe browser bundle:
   Scramjet, the controller and service worker, the WebAssembly rewriter,
   locally bundled Libcurl and Epoxy transports, and all required notices.
-- The Browser accepts Asteroid OS's short-lived Shards access handoff and can
+- The Browser accepts Asteroid OS One's short-lived Shards access handoff and can
   open either the full browser interface or an OS-launched web app target.
 - Its 16-profile per-site compatibility engine learns and remembers the best
   working transport/header/rewriter combination for each host. These local site
   blueprints do not expose a user's browsing history to Supabase.
 - The background-research bridge can gather live Wikipedia results and return
-  sources to the Asteroid OS assistant without blocking the visible Browser.
+  sources to the Asteroid OS One assistant without blocking the visible Browser.
 - A bundled compatibility runtime is available automatically if the normal
   Scramjet runtime cannot load.
 - Relative asset paths and the included `.nojekyll` files allow the complete OS
@@ -52,7 +52,7 @@ complete Asteroid Browser runtime.
 
 ## Supabase Auth security upgrade
 
-- Asteroid OS now verifies every restored session against Supabase Auth's
+- Asteroid OS One now verifies every restored session against Supabase Auth's
   `/auth/v1/user` endpoint before the desktop can open.
 - The returned Supabase user ID must match the profile's `auth_user_id`; cached
   usernames and user-editable metadata are not authorization evidence.
@@ -114,7 +114,7 @@ complete Asteroid Browser runtime.
 
 The laptop service stores MessageX media, Asteroid ONE Files, and account
 recovery snapshots; it does not host this `index.html`.
-Open or host Asteroid OS separately. MessageX discovers the current media API
+Open or host Asteroid OS One separately. MessageX discovers the current media API
 through Supabase, and the laptop server supports the required cross-origin
 browser requests. The desktop MessageX app, Contacts, MessageX notifications,
 and Comet all use the same validated client embedded in this complete Asteroid
@@ -124,8 +124,8 @@ OS build. See `LAPTOP_STORAGE.md`.
 
 The normal-user supervisor starts automatically after the Windows owner signs
 in. It restarts the server, the same named-tunnel connector, and the Supabase
-heartbeat without hosting Asteroid OS itself. Supabase retains accounts, chats,
-messages, and Asteroid OS sync data; the laptop retains media under
+heartbeat without hosting Asteroid OS One itself. Supabase retains accounts, chats,
+messages, and Asteroid OS One sync data; the laptop retains media under
 `storage\chat-media` and account files under `storage\asteroid-one`. A reboot
 replaces only disposable process IDs; the tunnel
 UUID and permanent `workers.dev` gateway address do not change. See

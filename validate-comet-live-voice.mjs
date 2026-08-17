@@ -4,8 +4,12 @@ const client = await readFile(new URL('./index.html', import.meta.url), 'utf8');
 const start = client.indexOf('// Hidden system-wide "Hey Comet" wake-word listener.');
 const end = client.indexOf('function tick()', start);
 const voice = start >= 0 && end > start ? client.slice(start, end) : '';
-const manualStart = voice.slice(voice.indexOf("window.addEventListener('cometmanualstart'"), voice.indexOf("// Browsers may require a user gesture", voice.indexOf("window.addEventListener('cometmanualstart'")));
+const manualStart = voice.slice(voice.indexOf("window.addEventListener('cometmanualstart'"), voice.indexOf('// Pause and resume only an already-authorized listener', voice.indexOf("window.addEventListener('cometmanualstart'")));
 const startEngine = voice.slice(voice.indexOf('const startRecognitionEngine='), voice.indexOf('const applySpeechPhrases=', voice.indexOf('const startRecognitionEngine=')));
+const authLifecycle = voice.slice(voice.indexOf("window.addEventListener('asteroidauthchange'"), voice.indexOf("window.addEventListener('cometvoiceupdate'"));
+const visibilityLifecycle = voice.slice(voice.indexOf("document.addEventListener('visibilitychange'"), voice.indexOf("navigator.permissions?.query", voice.indexOf("document.addEventListener('visibilitychange'")));
+const lockLifecycle = voice.slice(voice.indexOf("window.addEventListener('asteroidlockchange'"), voice.indexOf("window.addEventListener('asteroidauthchange'"));
+const optionalWake = voice.slice(voice.indexOf('const startWakeListener='), voice.indexOf('const stopWakeListener='));
 
 const checks = [
   ['live voice implementation is present', voice.length > 1000],
@@ -19,6 +23,13 @@ const checks = [
   ['unsupported insecure contexts have a clear message', voice.includes('Microphone access requires a secure HTTPS browser page.')],
   ['voice results still dispatch through the normal Comet request path', voice.includes('handleCometRequest(clean,{voice:true})')],
   ['spoken answers still use browser speech synthesis', voice.includes('speechSynthesis.speak(u)')]
+  ,['sign-in automatically starts the wake listener', authLifecycle.includes('wakeShouldRun=true;') && authLifecycle.includes('startWakeListener();')]
+  ,['unlock automatically resumes the wake listener', lockLifecycle.includes('startWakeListener();')]
+  ,['foreground return automatically resumes the wake listener', visibilityLifecycle.includes('startWakeListener();')]
+  ,['background pause preserves the desired wake state', voice.includes("const stopWakeListener=(status='paused',{disable=false}={})=>")]
+  ,['normal desktop gestures never request microphone access', !voice.includes('armWakePermissionGesture') && !voice.includes("document.addEventListener('pointerdown',wakeGestureHandler,true)")]
+  ,['ungranted wake voice is silently optional', optionalWake.includes("if(microphonePermission!=='granted')") && optionalWake.includes("publishWakeStatus('off')") && !client.includes('data-comet-wake-status data-state=')]
+  ,['permission changes restart wake voice without a reload', voice.includes("permission.state==='granted'") && voice.includes('startWakeListener();')]
 ];
 
 let failed = 0;
