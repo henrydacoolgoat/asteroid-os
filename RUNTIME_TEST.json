@@ -94,6 +94,28 @@
       "publicHealthViaCloudflareDns": true,
       "mediaInventoryPreserved": true,
       "messageXRefreshAndRetryEnabled": true
+    },
+    "supabaseToLaptopQueue": {
+      "testedAt": "2026-08-18T12:40:04.796Z",
+      "twoIsolatedAccounts": "passed",
+      "differentAccountSawQueuedImage": true,
+      "originalMessageTimestampPreserved": true,
+      "temporaryObjectWasPrivate": true,
+      "laptopDetectedQueueWithinSeconds": 16,
+      "stableLaptopReferenceWritten": true,
+      "laptopByteCountMatched": true,
+      "laptopSHA256Matched": true,
+      "differentAccountDownloadedExactLaptopBytes": true,
+      "profilePhotoUsedSameRecoveryPath": true,
+      "profilePhotoSHA256Matched": true,
+      "supabaseObjectDeletedOnlyAfterLaptopVerification": true,
+      "remainingSupabaseQueueObjects": 0,
+      "temporaryCloudTestCleanup": {
+        "authUsersRemaining": 0,
+        "messagesRemaining": 0,
+        "chatsRemaining": 0,
+        "queueRowsRemaining": 0
+      }
     }
   }
 }

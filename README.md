@@ -1,8 +1,29 @@
-# Asteroid OS One v0.99.23.14 — Asteroid ONE GitHub Pages release
+# Asteroid OS One v0.99.23.17 — Asteroid ONE GitHub Pages release
 
 This build preserves the v0.99.23.4 performance and direct-username changes and
 includes laptop-backed MessageX media storage, FreePeriod, MessageX, and the
 complete Asteroid Browser runtime.
+
+## Asteroid OS One desktop design
+
+- The first-run/default desktop now uses a bundled dark Asteroid space wallpaper
+  with a quiet center and subtle violet detail around the edges.
+- The opaque bottom shelf is 54 pixels tall on desktop, with smaller app targets,
+  a compact search field, and a tighter status cluster that remains usable at
+  Windows display scaling above 100%.
+- The two built-in desktop shortcuts are hidden to keep the workspace clear.
+  Apps deliberately added by a user still appear on the desktop and remain
+  draggable.
+- All 19 supplied Asteroid tiles are now individual 256 × 256 RGBA PNGs. The
+  shell uses the complete transparent image for every app instead of cropping a
+  sprite sheet, so compact search results cannot expose gutters or cut off a tile.
+- Wi-Fi, volume, and battery indicators have been removed from the shelf and
+  lock screen because Asteroid OS One runs inside the browser and does not own
+  the device hardware. Notifications and the clock remain.
+- The notification bell is explicitly centered inside its button at desktop,
+  narrow-panel, and mobile sizes, with its unread badge anchored to the button.
+- Existing wallpaper choices are preserved. Only accounts still using the old
+  default wallpaper receive the one-time dark-wallpaper migration.
 
 ## Asteroid ONE laptop storage
 

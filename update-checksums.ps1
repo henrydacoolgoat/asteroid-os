@@ -5,6 +5,7 @@ $utf8WithoutBom = [System.Text.UTF8Encoding]::new($false)
 $normalizedTextExtensions = @('.html', '.js', '.mjs', '.md', '.txt')
 $browserDirectory = Join-Path $projectDirectory 'asteroid-browser'
 $browserOutputPath = Join-Path $browserDirectory 'SHA256SUMS.txt'
+$rejectedGeneratedAtlas = Join-Path $projectDirectory 'assets\asteroid-os-one-app-icons-remade-v2.png'
 
 function Get-DeterministicSha256 {
   param(
@@ -45,7 +46,7 @@ if (Test-Path -LiteralPath $browserDirectory) {
 
 $outputPath = Join-Path $projectDirectory 'SHA256SUMS.txt'
 $lines = Get-ChildItem -LiteralPath $projectDirectory -Recurse -File |
-  Where-Object { $_.FullName -ne $outputPath } |
+  Where-Object { $_.FullName -ne $outputPath -and $_.FullName -ne $rejectedGeneratedAtlas } |
   Sort-Object FullName |
   ForEach-Object {
     $relativePath = [System.IO.Path]::GetRelativePath($projectDirectory, $_.FullName).Replace('\', '/')
