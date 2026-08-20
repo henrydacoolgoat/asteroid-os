@@ -1,4 +1,4 @@
-# Asteroid OS One v0.99.23.17 — Asteroid ONE GitHub Pages release
+# Asteroid OS One v0.99.23.18 — Asteroid ONE GitHub Pages release
 
 This build preserves the v0.99.23.4 performance and direct-username changes and
 includes laptop-backed MessageX media storage, FreePeriod, MessageX, and the
@@ -17,6 +17,9 @@ complete Asteroid Browser runtime.
 - All 19 supplied Asteroid tiles are now individual 256 × 256 RGBA PNGs. The
   shell uses the complete transparent image for every app instead of cropping a
   sprite sheet, so compact search results cannot expose gutters or cut off a tile.
+- Each tile now has one thin, direct electric-violet outline following its full
+  six-sided silhouette. The previous thick white bevel bands and corner wedges
+  are removed without changing the approved app symbols or tile interiors.
 - Wi-Fi, volume, and battery indicators have been removed from the shelf and
   lock screen because Asteroid OS One runs inside the browser and does not own
   the device hardware. Notifications and the clock remain.

@@ -11,7 +11,7 @@ const expectedIcons = [
 
 const iconFiles = await Promise.all(expectedIcons.map(async icon => ({
   icon,
-  bytes: await readFile(new URL(`./assets/asteroid-icons-v2/${icon}.png`, import.meta.url))
+  bytes: await readFile(new URL(`./assets/asteroid-icons-v3/${icon}.png`, import.meta.url))
 })));
 const iconMapMatch = page.match(/const iconFilePaths=Object\.freeze\(\{([\s\S]*?)\n  \}\);/);
 const iconMap = iconMapMatch?.[1] || '';
@@ -23,8 +23,8 @@ const validRgbaIcons = iconFiles.filter(({ bytes }) => (
 ));
 
 const checks = [
-  ['visible brand is Asteroid OS One', page.includes('<meta name="application-name" content="Asteroid OS One"') && page.includes('<title>Asteroid OS One v0.99.23.17')],
-  ['release metadata uses one consistent build id', page.includes('<meta name="asteroid-build" content="asteroid-os-one-v0.99.23.17-2026-08-18"') && page.includes("const ASTEROID_RELEASE_BUILD='asteroid-os-one-v0.99.23.17-2026-08-18';")],
+  ['visible brand is Asteroid OS One', page.includes('<meta name="application-name" content="Asteroid OS One"') && page.includes('<title>Asteroid OS One v0.99.23.18')],
+  ['release metadata uses one consistent build id', page.includes('<meta name="asteroid-build" content="asteroid-os-one-v0.99.23.18-2026-08-18"') && page.includes("const ASTEROID_RELEASE_BUILD='asteroid-os-one-v0.99.23.18-2026-08-18';")],
   ['top-level document replacement guard loads before application markup', page.indexOf('__asteroidTopDocumentGuardInstalled') > page.indexOf('<script id="asteroid-top-level-guard">') && page.indexOf('__asteroidTopDocumentGuardInstalled') < page.indexOf('id="asteroidAuthGate"') && page.indexOf('__asteroidTopDocumentGuardInstalled') < page.indexOf('id="messageXEmbeddedSource"') && page.includes("const asteroidShellDocument=document.querySelector('meta[name=\"asteroid-build\"]')?.content?.startsWith('asteroid-os-one-')===true;") && page.includes("if(asteroidShellDocument&&!window.__asteroidTopDocumentGuardInstalled)") && page.includes("documentPrototype.open=function(...args){blocked('open',args[0]);return document}") && page.includes("documentPrototype.write=function(...args){blocked('write',args[0])}")],
   ['legacy OPFS name is retained for existing user files', page.includes("getDirectoryHandle('Asteroid OS',{create:true})")],
   ['new shell override is present', page.includes('<style id="asteroid-os-one-shell-style">')],
@@ -46,7 +46,7 @@ const checks = [
   ['window controls use standard minimize, maximize, and close glyphs', page.includes('<button class="min-btn" aria-label="Minimize" title="Minimize"><span aria-hidden="true">—</span></button><button class="max-btn" aria-label="Maximize" title="Maximize"><span aria-hidden="true">□</span></button><button class="close-btn" aria-label="Close" title="Close"><span aria-hidden="true">×</span></button>') && /\.traffic button\{[\s\S]*?border-radius:5px!important;/.test(page) && /\.traffic button::after\{content:none!important\}/.test(page)],
   ['all 19 icon files are 256px RGBA PNG assets', validRgbaIcons.length === expectedIcons.length],
   ['individual icon renderer uses repository assets', page.includes('const transparentAsset=iconFilePaths[resolved];') && page.includes("el.classList.add('asteroid-one-transparent-icon')") && page.includes('img.src=transparentAsset;')],
-  ['all 19 supplied app icons are mapped', expectedIcons.every(icon => new RegExp(`\\b${icon}:'assets/asteroid-icons-v2/${icon}\\.png'`).test(iconMap))]
+  ['all 19 supplied app icons are mapped', expectedIcons.every(icon => new RegExp(`\\b${icon}:'assets/asteroid-icons-v3/${icon}\\.png'`).test(iconMap))]
 ];
 
 const failures = checks.filter(([, passed]) => !passed).map(([name]) => name);

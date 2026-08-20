@@ -39,6 +39,19 @@ The selected shelf structure, proportions, spacing, opacity, grouping, icon coun
 
 final result: passed
 
+## v0.99.23.18 direct-outline icon audit
+
+- Rebuilt all 19 individual RGBA app assets in
+  `assets/asteroid-icons-v3/` from the approved v2 artwork.
+- Removed only the wide white perimeter bevel and both white corner wedges.
+- Added one consistent three-pixel electric-violet line that directly follows the
+  complete six-sided silhouette; symbols, tile interiors, order, and labels stay
+  unchanged.
+- Reproducible build: `refine-icon-outlines.py`.
+- Evidence sheet: `design-qa/v0.99.23.18-direct-outline-icons.png`.
+
+final result: passed
+
 ## v0.99.23.17 transparent-icon and Supabase recovery audit
 
 ### Icon asset repair
