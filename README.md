@@ -1,4 +1,4 @@
-# Asteroid OS One v0.99.23.18 — Asteroid ONE GitHub Pages release
+# Asteroid OS One v0.99.23.19 — Asteroid ONE GitHub Pages release
 
 This build preserves the v0.99.23.4 performance and direct-username changes and
 includes laptop-backed MessageX media storage, FreePeriod, MessageX, and the
@@ -20,6 +20,10 @@ complete Asteroid Browser runtime.
 - Each tile now has one thin, direct electric-violet outline following its full
   six-sided silhouette. The previous thick white bevel bands and corner wedges
   are removed without changing the approved app symbols or tile interiors.
+- The five pinned desktop shelf icons are now 60 × 60 pixels—exactly twice the
+  previous 30 × 30 size—with larger hit targets and a 78-pixel opaque shelf.
+  Narrow touch layouts use a space-safe 38-pixel cap so every pinned app remains
+  visible and usable on phones.
 - Wi-Fi, volume, and battery indicators have been removed from the shelf and
   lock screen because Asteroid OS One runs inside the browser and does not own
   the device hardware. Notifications and the clock remain.
